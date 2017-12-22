@@ -1,0 +1,35 @@
+*{
+	box-sizing: border-box;
+}
+header {
+	background-color: cyan;
+}
+header ul {
+	text-decoration: none;
+	list-style: none;
+	text-align: right;
+}
+.trips-section {
+	max-width: 600px;
+ 	margin: 0 auto;
+}
+.tripname {
+	display: block;
+	color: grey;
+	font-style: italic;
+	font-size: 20px;
+	margin-bottom: 15px;
+}
+.trip-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.trip-list > li {
+  margin-bottom: 20px;
+  border: 1px solid grey;
+  padding: 20px;
+}
+.trip-desciption * {
+	vertical-align: middle;
+}
