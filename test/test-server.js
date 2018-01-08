@@ -5,7 +5,7 @@ const app = require('../server.js');
 chai.should();
 chai.use(chaiHttp);
 
-describe('Landing Page', function() {
+describe('Home Page', function() {
 	it('should return success status', function(){
 		return chai.request(app)
 		.get('/')
