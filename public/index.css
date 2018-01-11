@@ -4,10 +4,20 @@
 header {
 	background-color: cyan;
 }
-header ul {
+header ul{
 	text-decoration: none;
 	list-style: none;
 	text-align: right;
+}
+.nav-container {
+	text-align: right;
+}
+.nav-links a {
+	text-decoration: none;
+}
+.login-section {
+	margin: 0 auto;
+	text-align: center;
 }
 .trips-section {
 	max-width: 600px;
@@ -26,10 +36,18 @@ header ul {
 }
 
 .trip-list > li {
-  margin-bottom: 20px;
-  border: 1px solid grey;
-  padding: 20px;
+	margin-bottom: 20px;
+	border: 1px solid grey;
+	padding: 20px;
 }
-.trip-desciption * {
+.place-list > li {
+	margin-bottom: 20px;
+	border: 1px solid grey;
+	padding: 20px;
+}
+.trip-description * {
 	vertical-align: middle;
+}
+.create-trip-button {
+	display: block;
 }
