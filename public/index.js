@@ -9,10 +9,12 @@ const user = {
 		endDate: new Date(2016, 12, 20)	,
 		country: "India",
 		places: [{
+			id: "00",
 			name: "Place One",
 			description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
 		},
 		{
+			id: "01",
 			name: "Place Two",
 			description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
 		}]
@@ -25,6 +27,7 @@ const user = {
 		endDate: new Date(2017, 11, 20),
 		country: "US",
 		places: [{
+			id: "10",
 			name: "ertrt",
 			description: "trytytu"
 		}]
@@ -37,6 +40,7 @@ const user = {
 		endDate: new Date(2017, 12, 20),
 		country: "Mexico",
 		places: [{
+			id: "20",
 			name: "ertrt",
 			description: "trytytu"
 		}]	
@@ -52,6 +56,8 @@ function tripToHtml(trip, isTripListDisplay=true){
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
 		<span>${trip.startDate.toLocaleDateString()} - ${trip.endDate.toLocaleDateString()} </span>
 		<p class-"trip-desc">${trip.country}</p>
+		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
+		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
 	</li>
 	`
 	}
@@ -61,7 +67,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 			<div>
 				<h2>${trip.name}</h2>
 
-				${placesToHtml(trip.places)}
+				${placesToHtml(trip)}
 			</div>
 		`
 
@@ -78,13 +84,15 @@ function tripsToHtml(trips) {
 	</ul>
 	`
 }
-function placeToHtml(place, isPlaceListDisplay=true) {
+function placeToHtml(place, trip, isPlaceListDisplay=true) {
 	let html = "";
 	if(isPlaceListDisplay) {
 	html = `
 	<li class="place-item">
-		<a class="placename">${place.name}</a>
+		<h4 class="placename">${place.name}</h4>
 		<p class-"place-desc">${place.description}</p>
+		<input type="button" value="Edit" class="edit-place-button" data-id="${place.id}" data-trip="${trip.id}">
+		<input type="button" value="Delete" class="delete-place-button" data-id="${place.id}" data-trip="${trip.id}">
 	</li>
 	`
 	}
@@ -96,12 +104,12 @@ function placeToHtml(place, isPlaceListDisplay=true) {
 	return html;
 }
 
-function placesToHtml(places){
-	console.log(`placesToHtml() - ${places}`);
-	return places && places.length > 0 ? `
+function placesToHtml(trip){
+	
+	return trip.places && trip.places.length > 0 ? `
 	<ul class="place-list">
-		${places.map(function(place) {
-			return placeToHtml(place);
+		${trip.places.map(function(place) {
+			return placeToHtml(place, trip);
 		}).join('\n')}
 	</ul>
 	`: `<span>No places to display</span>`
@@ -139,11 +147,31 @@ function handleLoginSubmission(){
 	$('main').on('submit','.login-form', function(event) {
 		event.preventDefault();
 		console.log('Login form submitted');
+		$('.nav-container').html(`
+			<span>Hi, user!</span>
+			<ul class="nav-links">
+				<li><a href="#" class="home-link">Home</a></li>
+				<li><a href="#" class="logout-link">Logout</a></li>
+			</ul>
+		`);
 		showTripsSection();
 		
 	})
 }
-
+function handleUserHomeClick() {
+	$('.nav-container').on('click','.home-link', function(event) {
+		console.log("Home clicked");
+		event.preventDefault();
+		showTripsSection();
+	})
+}
+function handleUserLogOutClick() {
+	$('.nav-container').on('click','.logout-link', function(event) {
+		console.log("Logoutclicked");
+		event.preventDefault();
+		showLogIn();
+	})
+}
 //User clicks add new trip
 function handleAddNewTrip(){
 	$('main').on('click', '.add-trip-button',function(event) {
@@ -169,7 +197,7 @@ function handleCreatNewTrip() {
 //Add the user entered trip details to the user object
 function addTripToUser(tripName, tripStartDate, tripEndDate, tripCountry, tripdescription) {
 	const newTrip = {
-		id: user.trips.length,
+		id: generateId(),
 		name: tripName,
 		description: tripdescription,
 		startDate: new Date(tripStartDate),
@@ -180,7 +208,7 @@ function addTripToUser(tripName, tripStartDate, tripEndDate, tripCountry, tripde
 	console.log(user.trips);
 	
 }
-//Display details of a trip when the user clicks a trip name
+//Display details of a trip when the user clicks a trip 
 function handleDisplayTripDetails() {
 	$('main').on('click', '.tripname',function(event){
 		const tripId = $(this).data('id');
@@ -194,16 +222,69 @@ function handleDisplayTripDetails() {
 	})
 }
 function displayTripDetails(trip) {
-	showTripDetails();
-	$('.trip-places-list').html(tripToHtml(trip, false));
+	showTripDetails(trip);
 	
-
 }
 
 function handleAddPlaceToTrip() {
-	$('.add-place-button').on('click', function(event) {
-
+	$('main').on('click', '.add-place-button', function(event) {
+		console.log("Add Place Clicked")
+		const tripId = $(this).data('id');
+		showAddPlace(tripId);
 	})
+}
+function handleCreatePlaceInfo() {
+	$('main').on('submit', '.add-place-form', function(event) {
+		console.log("Add clicked");
+		const placeName = $('.js-place-name-entry').val();
+		const placeDescription = $('#place-desc').val();
+		$('.add-place-form')[0].reset();
+		const tripId = $(this).data('id');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		addPlaceToTrip(trip, placeName, placeDescription);
+		showTripDetails(trip);
+	})
+}
+
+function addPlaceToTrip(trip, placeName, placeDesc) {
+	const newPlace = {
+		id: generateId(),
+		name: placeName,
+		description: placeDesc
+	}
+	trip.places.push(newPlace);
+
+}
+function handleDeleteTrip() {
+	$('main').on('click','.delete-trip-button', function(event) {
+		console.log("Delete clicked");
+		const tripId = $(this).data('id');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		const index = user.trips.indexOf(trip);
+		if(index >= 0) {
+			user.trips.splice(index, 1);
+		}
+		showTripsSection();
+	})
+}
+
+function handleDeletePlace() {
+	$('main').on('click','.delete-place-button', function(event) {
+		console.log("Delete clicked");
+		const placeId = $(this).data('id');
+		const tripId = $(this).data('trip');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		const place = trip.places.find(function(place) {return place.id === placeId});
+		const index = trip.places.indexOf(place);
+		if(index >= 0) {
+			trip.places.splice(index, 1);
+		}
+		showTripDetails(trip);
+	})
+}
+
+function handleEditTrip() {
+	
 }
 // Show sign up form
 function showSignUp() {
@@ -268,7 +349,7 @@ function showCreateTrip() {
 				<input type="date" name="enddate" class="js-trip-end-entry"><br>
 				<label for="country">Country</label>
 				<input type="text" name="country" class="js-trip-country-entry"><br>
-				<p class="trip-desciption">
+				<p class="trip-description">
 					<label for='trip-desc'>Trip Description</label>
 					<textarea id="trip-desc" rows="9" cols="50"></textarea>
 				</p>
@@ -280,25 +361,49 @@ function showCreateTrip() {
 	$('main').html(content);
 }
 // Show details of a selected trip
-function showTripDetails() {
+function showTripDetails(trip) {
 	const content = `	
 		<section class="trip-details">
 			<div class="trip-places-list">
 			</div>
-			<input type="button" class="add-place-button" value="Add Place">
+			<input type="button" data-id="${trip.id}" class="add-place-button" value="Add Place">
 		</section>
 	`
 	$('main').html(content);
+	$('.trip-places-list').html(tripToHtml(trip, false));	
 
 }
+function showAddPlace(tripId) {
+	const content = `
+	<form action="#" data-id="${tripId}" class="add-place-form">
+		<label for="placename">Place Name</label>
+		<input type="text" name="placename" class="js-place-name-entry"><br>
+		<p class="place-description">
+			<label for='place-desc'>Description</label>
+			<textarea id="place-desc" rows="9" cols="50"></textarea>
+		</p>
+		<input type="submit" class="add-button js-add-button" value="Add">
+	</form>
+	`
+	$('main').html(content);
+}
 
+function generateId() {
+	return `${Math.random().toString(36).substring(2, 15)}${ Math.random().toString(36).substring(2, 15)}`
+}
 function init() {
 	handleHomeSignUp();
 	handleHomeLogin();
 	handleSignUpSubmission();
 	handleLoginSubmission();
+	handleUserHomeClick();
+	handleUserLogOutClick();
 	handleAddNewTrip();
 	handleCreatNewTrip();
 	handleDisplayTripDetails();
+	handleAddPlaceToTrip();
+	handleCreatePlaceInfo();
+	handleDeleteTrip();
+	handleDeletePlace();
 }
 $(init());
