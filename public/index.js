@@ -2,45 +2,45 @@ const user = {
 	username: "user",
 	password: "password",
 	trips: [ {
-		id: 0,
+		id: "0a",
 		name: "Trip 1",
 		description: "My first trip",
 		startDate: new Date(2016, 12, 04),
 		endDate: new Date(2016, 12, 20)	,
 		country: "India",
 		places: [{
-			id: "00",
+			id: "00a",
 			name: "Place One",
 			description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
 		},
 		{
-			id: "01",
+			id: "01a",
 			name: "Place Two",
 			description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
 		}]
 	},
 	{
-		id: 1,
+		id: "1a",
 		name: "Trip 2",
 		description: "My second trip",
 		startDate: new Date(2017, 11, 04),
 		endDate: new Date(2017, 11, 20),
 		country: "US",
 		places: [{
-			id: "10",
+			id: "10a",
 			name: "ertrt",
 			description: "trytytu"
 		}]
 	},
 	{
-		id: 2,
+		id: "2a",
 		name: "Trip 3",
 		description: "My third trip",
 		startDate: new Date(2017, 12, 04),
 		endDate: new Date(2017, 12, 20),
 		country: "Mexico",
 		places: [{
-			id: "20",
+			id: "20a",
 			name: "ertrt",
 			description: "trytytu"
 		}]	
@@ -278,12 +278,15 @@ function handleDeletePlace() {
 		const place = trip.places.find(function(place) {return place.id === placeId});
 		const index = trip.places.indexOf(place);
 		console.log(`TripId: ${tripId} PlaceId: ${placeId} TripPlace: ${trip.places[0].id} Place: ${place}, Index: ${index}`);
+		console.log(placeId);
+		console.log(tripId);
+		console.log(trip.places[0].id);
 		if(index >= 0) {
 			trip.places.splice(index, 1);
 		}
 		showTripDetails(trip);
 	})
-} //Not working for trip 2, 3
+} 
 
 // Handler to edit a trip
 function handleEditTrip() {
@@ -298,15 +301,24 @@ function handleEditTrip() {
 function showTripDetailsToEdit(trip) {
 	console.log(trip.startDate.toLocaleDateString());
 	console.log(trip.endDate.toLocaleDateString());
+	let start = trip.startDate;
+	let sday = ("0" + start.getDate()).slice(-2);
+	let smonth = ("0" + (start.getMonth() + 1)).slice(-2);
+	let startDate = start.getFullYear()+"-"+(smonth)+"-"+(sday);
+	let end = trip.endDate;
+	let eday = ("0" + end.getDate()).slice(-2);
+	let emonth = ("0" + (end.getMonth() + 1)).slice(-2);
+	let endDate = end.getFullYear()+"-"+(emonth)+"-"+(eday);
+
 	const content = `
 		<form action="#" class="edit-trip-form" data-id="${trip.id}">
 				<h2>Edit Trip</h2>
 				<label for="tripname">Trip Name</label>
 				<input type="text" name="tripname" value="${trip.name}" class="trip-name"><br>
 				<label for="startdate">Start Date</label>
-				<input type="date" name="startdate" value="${trip.startDate.toLocaleDateString()}" class="start-date"><br>
+				<input type="date" name="startdate" value="${startDate}" class="start-date"><br>
 				<label for="enddate">End Date</label>
-				<input type="date" name="enddate" value="${trip.endDate.toLocaleDateString()}" class="end-date"><br>
+				<input type="date" name="enddate" value="${endDate}" class="end-date"><br>
 				<label for="country">Country</label>
 				<input type="text" name="country" value="${trip.country}" class="country"><br>
 				<p class="trip-description">
@@ -326,10 +338,11 @@ function handleUpdateTrip() {
 		const tripId = $(this).data('id');
 		const trip = user.trips.find(function(trip) {return trip.id === tripId});
 		trip.name = $('.trip-name').val();
-		//trip.startDate = $('.start-date').val().toLocaleDateString();
-		//trip.endDate = $('.end-date').val().toLocaleDateString();
+		trip.startDate = new Date($('.start-date').val());
+		trip.endDate = new Date($('.end-date').val());
 		trip.country = $('.country').val();
 		trip.description = $('.description').val();
+		console.log("Start:" + trip.startDate.toString());
 		showTripsSection();
 	})
 }
