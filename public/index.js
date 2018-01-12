@@ -55,7 +55,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
 		<span>${trip.startDate.toLocaleDateString()} - ${trip.endDate.toLocaleDateString()} </span>
-		<p class-"trip-desc">${trip.country}</p>
+		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
 	</li>
@@ -255,6 +255,7 @@ function addPlaceToTrip(trip, placeName, placeDesc) {
 	trip.places.push(newPlace);
 
 }
+// Handler to delete a trip
 function handleDeleteTrip() {
 	$('main').on('click','.delete-trip-button', function(event) {
 		console.log("Delete clicked");
@@ -267,7 +268,7 @@ function handleDeleteTrip() {
 		showTripsSection();
 	})
 }
-
+// Handler to delete a place
 function handleDeletePlace() {
 	$('main').on('click','.delete-place-button', function(event) {
 		console.log("Delete clicked");
@@ -276,15 +277,102 @@ function handleDeletePlace() {
 		const trip = user.trips.find(function(trip) {return trip.id === tripId});
 		const place = trip.places.find(function(place) {return place.id === placeId});
 		const index = trip.places.indexOf(place);
+		console.log(`TripId: ${tripId} PlaceId: ${placeId} TripPlace: ${trip.places[0].id} Place: ${place}, Index: ${index}`);
 		if(index >= 0) {
 			trip.places.splice(index, 1);
 		}
 		showTripDetails(trip);
 	})
+} //Not working for trip 2, 3
+
+// Handler to edit a trip
+function handleEditTrip() {
+	$('main').on('click','.edit-trip-button', function(event) {
+		console.log("Edit clicked");
+		const tripId = $(this).data('id');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		showTripDetailsToEdit(trip);
+	})
+}
+// Show trip details form to edit
+function showTripDetailsToEdit(trip) {
+	console.log(trip.startDate.toLocaleDateString());
+	console.log(trip.endDate.toLocaleDateString());
+	const content = `
+		<form action="#" class="edit-trip-form" data-id="${trip.id}">
+				<h2>Edit Trip</h2>
+				<label for="tripname">Trip Name</label>
+				<input type="text" name="tripname" value="${trip.name}" class="trip-name"><br>
+				<label for="startdate">Start Date</label>
+				<input type="date" name="startdate" value="${trip.startDate.toLocaleDateString()}" class="start-date"><br>
+				<label for="enddate">End Date</label>
+				<input type="date" name="enddate" value="${trip.endDate.toLocaleDateString()}" class="end-date"><br>
+				<label for="country">Country</label>
+				<input type="text" name="country" value="${trip.country}" class="country"><br>
+				<p class="trip-description">
+					<label for='trip-desc'>Trip Description</label>
+					<textarea id="trip-desc" rows="9" cols="50" class="description">${trip.description}</textarea>
+				</p>
+				<input type="submit" class="update-trip-button" value="Update">
+		</form>	
+	`
+	$('main').html(content);
+
+}
+// Handler to update trip details
+function handleUpdateTrip() {
+	$('main').on('submit','.edit-trip-form', function(event) {
+		console.log("Update clicked");
+		const tripId = $(this).data('id');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		trip.name = $('.trip-name').val();
+		//trip.startDate = $('.start-date').val().toLocaleDateString();
+		//trip.endDate = $('.end-date').val().toLocaleDateString();
+		trip.country = $('.country').val();
+		trip.description = $('.description').val();
+		showTripsSection();
+	})
 }
 
-function handleEditTrip() {
-	
+// Handler to edit place
+function handleEditPlace() {
+	$('main').on('click','.edit-place-button', function(event) {
+		console.log("Edit clicked");
+		const placeId = $(this).data('id');
+		const tripId = $(this).data('trip');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		const place = trip.places.find(function(place) {return place.id === placeId});
+		showPlaceDetailsToEdit(trip, place);
+	})
+}
+// Show place input form to edit
+function showPlaceDetailsToEdit(trip, place) {
+	const content = `
+	<form action="#" data-id="${place.id}" data-trip="${trip.id}" class="edit-place-form">
+		<h2>Edit Place</h2>
+		<label for="placename">Place Name</label>
+		<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
+		<p class="place-description">
+			<label for='place-desc'>Description</label>
+			<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
+		</p>
+		<input type="submit" class="update-button js-update-button" value="Update">
+	</form>
+	`
+	$('main').html(content);
+}
+// Handler to update place details
+function handleUpdatePlace() {
+	$('main').on('submit','.edit-place-form', function(event) {
+		console.log("Update clicked");
+		const placeId = $(this).data('id');
+		const tripId = $(this).data('trip');
+		const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		const place = trip.places.find(function(place) {return place.id === placeId});
+		place.name = $('.place-name-entry').val();
+		place.description = $('#place-desc').val();
+		showTripDetails(trip);
+	})
 }
 // Show sign up form
 function showSignUp() {
@@ -364,6 +452,8 @@ function showCreateTrip() {
 function showTripDetails(trip) {
 	const content = `	
 		<section class="trip-details">
+			<div class="trip-info">
+			</div>
 			<div class="trip-places-list">
 			</div>
 			<input type="button" data-id="${trip.id}" class="add-place-button" value="Add Place">
@@ -371,7 +461,7 @@ function showTripDetails(trip) {
 	`
 	$('main').html(content);
 	$('.trip-places-list').html(tripToHtml(trip, false));	
-
+	//$('.trip-info').html(tripToHtml(trip));
 }
 function showAddPlace(tripId) {
 	const content = `
@@ -405,5 +495,9 @@ function init() {
 	handleCreatePlaceInfo();
 	handleDeleteTrip();
 	handleDeletePlace();
+	handleEditTrip();
+	handleUpdateTrip();
+	handleEditPlace();
+	handleUpdatePlace();
 }
 $(init());
