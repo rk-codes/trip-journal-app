@@ -374,6 +374,12 @@ function handleUpdatePlace() {
 		showTripDetails(trip);
 	})
 }
+// Handler to navigate back to trips section
+function handleBackToTrips() {
+	$('main').on('click', '.back-button', function(event) {
+		showTripsSection();
+	})
+}
 // Show sign up form
 function showSignUp() {
 	const content = `
@@ -457,6 +463,7 @@ function showTripDetails(trip) {
 			<div class="trip-places-list">
 			</div>
 			<input type="button" data-id="${trip.id}" class="add-place-button" value="Add Place">
+			<input type="button" data-id="${trip.id}" class="back-button" value="Back">
 		</section>
 	`
 	$('main').html(content);
@@ -499,5 +506,6 @@ function init() {
 	handleUpdateTrip();
 	handleEditPlace();
 	handleUpdatePlace();
+	handleBackToTrips();
 }
 $(init());
