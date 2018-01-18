@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const TripSchema = mongoose.Schema({
+	
+	user: {type: mongoose.Schema.Types.ObjectId , ref: "User"},
 	name: {
 		type: String,
 		required: true
@@ -27,6 +29,8 @@ const TripSchema = mongoose.Schema({
 })
 TripSchema.methods.serialize = function() {
 	return {
+		//userId: this.user.id || '', 
+		id: this._id,
 		name: this.name || '',
 		description: this.description || '',
 		startDate: this.startDate || '',
