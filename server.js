@@ -8,8 +8,9 @@ const {router: tripRouter} = require('./trip');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {Trip} = require('./trip/models');
-const {User} = require('./user/models');
+const {Trip} = require('./trip');
+const {User} = require('./user');
+const {Place} = require('./place');
 
 const { router: userRouter } = require('./user');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
@@ -28,16 +29,14 @@ app.use('/user/', userRouter);
 app.use('/auth/', authRouter);
 
 // GET trips
-app.get('/trips', jwtAuth, (req, res) => {
+app.get('/trips/', jwtAuth, (req, res) => {
 
 	if(req.user) {
-		// req.user.populate({path: 'trips', populate: {path: 'places'}}) .then(function(user) {
-		// res.json(user.trips.map(trip => trip.serialize()));
-    
-		// })
+		console.log(req.user.id);
 		User.findByUserName(req.user.username).populate({path: 'trips'}).then(function(user) {
-			console.log(user.trips.length);
-			res.json(user.trips.map(trip => trip.serialize()));
+			console.log(user.username);
+			console.log(user.trips.length); 
+			res.json(user.trips.map(trip => trip));
 		})
    
     	.catch(err => {
@@ -50,11 +49,32 @@ app.get('/trips', jwtAuth, (req, res) => {
 	
 })
 
+app.get('/trips/:id/places', jwtAuth, (req, res) => {
+	Trip.findById(req.params.id).populate({path: 'places'})
+	.then(trip => res.json(trip.places))
+	.catch(err => {
+		console.error(err);
+		res.status(500).json({error: 'Internal Server Error'});
+	});
+})
+
+app.get('/trips/:tripid/places/:placeid',jwtAuth, (req, res) => {
+	Place.findById(req.params.placeid)
+	.then(place => {
+		console.log(place.trip);
+		console.log(req.params.tripid);
+		if(place.trip === req.params.tripid) {
+			res.json(place)
+		} else{
+			res.status(400).json("Trip does'nt contain the place");
+		}
+	})
+} )
 // GET a trip by id
 app.get('/trips/:id', jwtAuth, (req, res) => {
 	//Trip.findById(req.params.id)
 	Trip.findById(req.params.id)
-	.then(trip =>res.json(trip.serialize()))
+	.then(trip =>res.json(trip))
 	.catch(err => {
 		console.error(err);
 		res.status(500).json({error: 'Internal Server Error'});
@@ -62,16 +82,45 @@ app.get('/trips/:id', jwtAuth, (req, res) => {
 })
 
 // DELETE a trip
-app.delete('/trips/:id', jwtAuth, (req, res) => {
-  Trip
-    .findByIdAndRemove(req.params.id)
-    .then(restaurant => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error' }));
-});
+// app.delete('/trips/:id', jwtAuth, (req, res) => {
+
+//   Trip
+//     .findByIdAndRemove(req.params.id)
+//     .then(trip => res.status(204).end())
+//     .catch(err => res.status(500).json({ message: 'Internal server error' }));
+// });
+
+app.delete('/trips/:id', jwtAuth, function(req, res)  {
+
+	Trip.findByIdAndRemove(req.params.id)
+	.then(function(trip) {
+		if(trip) {
+			console.log(trip);
+			User.findByIdAndUpdate({_id: trip.user},
+				{ $pull: {trips: req.params.id} }, function(err, data) {
+					if(err) {
+						console.log(err);
+        				return res.send(err);
+					}
+				return res.json(trip);
+			})
+		} else {
+			 return res.send("No trip found");
+		}
+       
+	})
+	.catch(err => {
+		console.error(err);
+		res.status(500).json({ error: 'Internal Server Error' });
+	})
+
+})
 
 
+// POST new trip
+app.post('/trips/', jsonParser, jwtAuth, (req, res) => {
 
-app.post('/trips', jsonParser, jwtAuth, (req, res) => {
+console.log(req.user);
 	const requiredFields = ['name', 'description', 'startDate', 'endDate', 'country'];
 	for (let i = 0; i < requiredFields.length; i++) {
     	const field = requiredFields[i];
@@ -81,20 +130,89 @@ app.post('/trips', jsonParser, jwtAuth, (req, res) => {
       		return res.status(400).send(message);
     	}
   	}
+  	
 	Trip.create({
+		user: req.user.id,
 		name: req.body.name,
 		description: req.body.description,
 		startDate: req.body.startDate,
 		endDate: req.body.endDate,
-		country: req.body.country
-		
+		country: req.body.country 
 	})
-	.then(trip => res.status(201).json(trip.serialize()))
+	.then(function(trip) {
+		User.findByIdAndUpdate(req.user.id, 
+			{ $push: {"trips": trip} },
+			{  safe: true, upsert: true},
+       		function(err, model) {
+         		if(err){
+        			console.log(err);
+        			return res.send(err);
+        		 }
+        	return res.json(trip.serialize());
+		});
+
+	})
 	.catch(err => {
 		console.error(err);
-    	res.status(500).json({ error: 'Internal Server Error' });
-	});
+		res.status(500).json({ error: 'Internal Server Error' });
+	})
+	
 })
+
+app.put('/trips/:id', (req, res) => {
+  // ensure that the id in the request path and the one in request body match
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path id (${req.params.id}) and request body id ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+
+  const toUpdate = {};
+  const updateableFields = ['name', 'description', 'startDate', 'endDate', 'country'];
+
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      toUpdate[field] = req.body[field];
+    }
+  });
+
+  Trip
+    // all key/value pairs in toUpdate will be updated -- that's what `$set` does
+    .findByIdAndUpdate(req.params.id, { $set: toUpdate })
+    .then(trip => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+});
+
+app.post('/trips/:id/places', jwtAuth, jsonParser, (req, res) => {
+	const requiredFields = ['name', 'description'];
+	for (let i = 0; i < requiredFields.length; i++) {
+    	const field = requiredFields[i];
+    	if (!(field in req.body)) {
+      		const message = `Missing \`${field}\` in request body`;
+      		console.error(message);
+      		return res.status(400).send(message);
+    	}
+  	}
+  	Place.create({
+  		trip: mongoose.Schema.Types.ObjectId(req.params.id),
+  		name: req.body.name,
+  		description: req.body.description
+  	})
+  	.then(function(place) {
+  		Trip.findByIdAndUpdate(req.params.id,
+  			{ $push: {"places": place} },
+			{  safe: true, upsert: true},
+			function(err, model) {
+         		if(err){
+        			console.log(err);
+        			return res.send(err);
+        		 }
+        	return res.json(place.serialize());
+  			})
+		})
+  })
 
 //app.use('/trip/', tripRouter);
 
