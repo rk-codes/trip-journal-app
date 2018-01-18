@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
-cont PlaceSchema = mongoose.Schema({
+const PlaceSchema = mongoose.Schema({
 	name: String,
-	description: String
+	description: String,
+	trip: {type: mongoose.Schema.Types.ObjectId , ref: "Trip"}
 
 });
 

@@ -1,4 +1,4 @@
 const {Place} = require('./models');
-const {router} = require('./router');
+//const {router} = require('./router');
 
-module.exports = {Place,router};
+module.exports = {Place};
