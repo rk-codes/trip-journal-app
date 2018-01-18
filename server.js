@@ -28,7 +28,7 @@ passport.use(jwtStrategy);
 app.use('/user/', userRouter);
 app.use('/auth/', authRouter);
 
-// GET trips
+// GET all trips
 app.get('/trips/', jwtAuth, (req, res) => {
 
 	if(req.user) {
@@ -49,27 +49,6 @@ app.get('/trips/', jwtAuth, (req, res) => {
 	
 })
 
-app.get('/trips/:id/places', jwtAuth, (req, res) => {
-	Trip.findById(req.params.id).populate({path: 'places'})
-	.then(trip => res.json(trip.places))
-	.catch(err => {
-		console.error(err);
-		res.status(500).json({error: 'Internal Server Error'});
-	});
-})
-
-app.get('/trips/:tripid/places/:placeid',jwtAuth, (req, res) => {
-	Place.findById(req.params.placeid)
-	.then(place => {
-		console.log(place.trip);
-		console.log(req.params.tripid);
-		if(place.trip === req.params.tripid) {
-			res.json(place)
-		} else{
-			res.status(400).json("Trip does'nt contain the place");
-		}
-	})
-} )
 // GET a trip by id
 app.get('/trips/:id', jwtAuth, (req, res) => {
 	//Trip.findById(req.params.id)
@@ -82,14 +61,6 @@ app.get('/trips/:id', jwtAuth, (req, res) => {
 })
 
 // DELETE a trip
-// app.delete('/trips/:id', jwtAuth, (req, res) => {
-
-//   Trip
-//     .findByIdAndRemove(req.params.id)
-//     .then(trip => res.status(204).end())
-//     .catch(err => res.status(500).json({ message: 'Internal server error' }));
-// });
-
 app.delete('/trips/:id', jwtAuth, function(req, res)  {
 
 	Trip.findByIdAndRemove(req.params.id)
@@ -159,7 +130,8 @@ console.log(req.user);
 	
 })
 
-app.put('/trips/:id', (req, res) => {
+//Update a trip
+app.put('/trips/:id', jwtAuth, jsonParser, (req, res) => {
   // ensure that the id in the request path and the one in request body match
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (
@@ -185,6 +157,31 @@ app.put('/trips/:id', (req, res) => {
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
+// GET all places in a trip
+app.get('/trips/:id/places', jwtAuth, (req, res) => {
+	Trip.findById(req.params.id).populate({path: 'places'})
+	.then(trip => res.json(trip.places))
+	.catch(err => {
+		console.error(err);
+		res.status(500).json({error: 'Internal Server Error'});
+	});
+})
+
+//GET a place by id
+app.get('/trips/:tripid/places/:placeid',jwtAuth, (req, res) => {
+	Place.findById(req.params.placeid)
+	.then(place => {
+		console.log(place.trip);
+		console.log(req.params.tripid);
+		if(place.trip === req.params.tripid) {
+			res.json(place)
+		} else{
+			res.status(400).json("Trip does'nt contain the place");
+		}
+	})
+})
+
+//POST a new place in a trip
 app.post('/trips/:id/places', jwtAuth, jsonParser, (req, res) => {
 	const requiredFields = ['name', 'description'];
 	for (let i = 0; i < requiredFields.length; i++) {
@@ -213,6 +210,58 @@ app.post('/trips/:id/places', jwtAuth, jsonParser, (req, res) => {
   			})
 		})
   })
+
+//DELETE a place in a trip
+app.delete('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
+	Place.findByIdAndRemove(req.params.placeid)
+	.then(function(place) {
+		if(place) {
+			console.log(place);
+			Trip.findByIdAndUpdate({_id: req.params.tripid},
+				{ $pull: {places: req.params.placeid} }, function(err, data) {
+					if(err) {
+						console.log(err);
+        				return res.send(err);
+					}
+				return res.json(place);
+			})
+		} else {
+			 return res.send("No place found");
+		}
+       
+	})
+	.catch(err => {
+		console.error(err);
+		res.status(500).json({ error: 'Internal Server Error' });
+	})
+})
+
+//Update a place in a trip
+app.put('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
+	 // ensure that the id in the request path and the one in request body match
+  if (!(req.params.placeid && req.body.id && req.params.placeid === req.body.id)) {
+    const message = (
+      `Request path id (${req.params.id}) and request body id ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+
+  const toUpdate = {};
+  const updateableFields = ['name', 'description'];
+
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      toUpdate[field] = req.body[field];
+    }
+  });
+
+  Place
+    // all key/value pairs in toUpdate will be updated -- that's what `$set` does
+    .findByIdAndUpdate(req.params.placeid, { $set: toUpdate })
+    .then(place => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+})
 
 //app.use('/trip/', tripRouter);
 
