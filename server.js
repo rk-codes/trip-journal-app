@@ -1,284 +1,72 @@
+'use strict';
+require('dotenv').config();
 const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
+const morgan = require('morgan');
 const passport = require('passport');
 
-const { DATABASE_URL, PORT } = require('./config');
+
+const { router: usersRouter } = require('./user');
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const {router: tripRouter} = require('./trip');
 
-const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const {Trip} = require('./trip');
+const { PORT, DATABASE_URL } = require('./config');
+
 const {User} = require('./user');
-const {Place} = require('./place');
 
-const { router: userRouter } = require('./user');
-const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
-const jwtAuth = passport.authenticate('jwt', { session: false });
+const app = express();
 
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+// Logging
+app.use(morgan('common'));
 
-app.use(express.static('public'));
+// CORS
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-
-app.use('/user/', userRouter);
+app.use('/user/', usersRouter);
 app.use('/auth/', authRouter);
+app.use('/', tripRouter);
 
-// GET all trips
-app.get('/trips/', jwtAuth, (req, res) => {
+const jwtAuth = passport.authenticate('jwt', { session: false });
 
-	if(req.user) {
-		console.log(req.user.id);
-		User.findByUserName(req.user.username).populate({path: 'trips'}).then(function(user) {
-			console.log(user.username);
-			console.log(user.trips.length); 
-			res.json(user.trips.map(trip => trip));
-		})
-   
-    	.catch(err => {
-     		 console.error(err);
-      		res.status(500).json({ error: 'Internal Server Error' });
-    	});
-	} else {
-	res.status(400).json({error: 'No logged in user'})
-	}	
-	
-})
-
-// GET a trip by id
-app.get('/trips/:id', jwtAuth, (req, res) => {
-	//Trip.findById(req.params.id)
-	Trip.findById(req.params.id)
-	.then(trip =>res.json(trip))
-	.catch(err => {
-		console.error(err);
-		res.status(500).json({error: 'Internal Server Error'});
-	});
-})
-
-// DELETE a trip
-app.delete('/trips/:id', jwtAuth, function(req, res)  {
-
-	Trip.findByIdAndRemove(req.params.id)
-	.then(function(trip) {
-		if(trip) {
-			console.log(trip);
-			User.findByIdAndUpdate({_id: trip.user},
-				{ $pull: {trips: req.params.id} }, function(err, data) {
-					if(err) {
-						console.log(err);
-        				return res.send(err);
-					}
-				return res.json(trip);
-			})
-		} else {
-			 return res.send("No trip found");
-		}
-       
-	})
-	.catch(err => {
-		console.error(err);
-		res.status(500).json({ error: 'Internal Server Error' });
-	})
-
-})
-
-
-// POST new trip
-app.post('/trips/', jsonParser, jwtAuth, (req, res) => {
-
-console.log(req.user);
-	const requiredFields = ['name', 'description', 'startDate', 'endDate', 'country'];
-	for (let i = 0; i < requiredFields.length; i++) {
-    	const field = requiredFields[i];
-    	if (!(field in req.body)) {
-      		const message = `Missing \`${field}\` in request body`;
-      		console.error(message);
-      		return res.status(400).send(message);
-    	}
-  	}
-  	
-	Trip.create({
-		user: req.user.id,
-		name: req.body.name,
-		description: req.body.description,
-		startDate: req.body.startDate,
-		endDate: req.body.endDate,
-		country: req.body.country 
-	})
-	.then(function(trip) {
-		User.findByIdAndUpdate(req.user.id, 
-			{ $push: {"trips": trip} },
-			{  safe: true, upsert: true},
-       		function(err, model) {
-         		if(err){
-        			console.log(err);
-        			return res.send(err);
-        		 }
-        	return res.json(trip.serialize());
-		});
-
-	})
-	.catch(err => {
-		console.error(err);
-		res.status(500).json({ error: 'Internal Server Error' });
-	})
-	
-})
-
-//Update a trip
-app.put('/trips/:id', jwtAuth, jsonParser, (req, res) => {
-  // ensure that the id in the request path and the one in request body match
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
-    const message = (
-      `Request path id (${req.params.id}) and request body id ` +
-      `(${req.body.id}) must match`);
-    console.error(message);
-    return res.status(400).json({ message: message });
-  }
-
-  const toUpdate = {};
-  const updateableFields = ['name', 'description', 'startDate', 'endDate', 'country'];
-
-  updateableFields.forEach(field => {
-    if (field in req.body) {
-      toUpdate[field] = req.body[field];
-    }
+// A protected endpoint which needs a valid JWT to access it
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'rosebud'
   });
-
-  Trip
-    // all key/value pairs in toUpdate will be updated -- that's what `$set` does
-    .findByIdAndUpdate(req.params.id, { $set: toUpdate })
-    .then(trip => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
-// GET all places in a trip
-app.get('/trips/:id/places', jwtAuth, (req, res) => {
-	Trip.findById(req.params.id).populate({path: 'places'})
-	.then(trip => res.json(trip.places))
-	.catch(err => {
-		console.error(err);
-		res.status(500).json({error: 'Internal Server Error'});
-	});
-})
+app.use('*', (req, res) => {
+  return res.status(404).json({ message: 'Not Found' });
+});
 
-//GET a place by id
-app.get('/trips/:tripid/places/:placeid',jwtAuth, (req, res) => {
-	Place.findById(req.params.placeid)
-	.then(place => {
-		console.log(place.trip);
-		console.log(req.params.tripid);
-		if(place.trip === req.params.tripid) {
-			res.json(place)
-		} else{
-			res.status(400).json("Trip does'nt contain the place");
-		}
-	})
-})
-
-//POST a new place in a trip
-app.post('/trips/:id/places', jwtAuth, jsonParser, (req, res) => {
-	const requiredFields = ['name', 'description'];
-	for (let i = 0; i < requiredFields.length; i++) {
-    	const field = requiredFields[i];
-    	if (!(field in req.body)) {
-      		const message = `Missing \`${field}\` in request body`;
-      		console.error(message);
-      		return res.status(400).send(message);
-    	}
-  	}
-  	Place.create({
-  		trip: mongoose.Schema.Types.ObjectId(req.params.id),
-  		name: req.body.name,
-  		description: req.body.description
-  	})
-  	.then(function(place) {
-  		Trip.findByIdAndUpdate(req.params.id,
-  			{ $push: {"places": place} },
-			{  safe: true, upsert: true},
-			function(err, model) {
-         		if(err){
-        			console.log(err);
-        			return res.send(err);
-        		 }
-        	return res.json(place.serialize());
-  			})
-		})
-  })
-
-//DELETE a place in a trip
-app.delete('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
-	Place.findByIdAndRemove(req.params.placeid)
-	.then(function(place) {
-		if(place) {
-			console.log(place);
-			Trip.findByIdAndUpdate({_id: req.params.tripid},
-				{ $pull: {places: req.params.placeid} }, function(err, data) {
-					if(err) {
-						console.log(err);
-        				return res.send(err);
-					}
-				return res.json(place);
-			})
-		} else {
-			 return res.send("No place found");
-		}
-       
-	})
-	.catch(err => {
-		console.error(err);
-		res.status(500).json({ error: 'Internal Server Error' });
-	})
-})
-
-//Update a place in a trip
-app.put('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
-	 // ensure that the id in the request path and the one in request body match
-  if (!(req.params.placeid && req.body.id && req.params.placeid === req.body.id)) {
-    const message = (
-      `Request path id (${req.params.id}) and request body id ` +
-      `(${req.body.id}) must match`);
-    console.error(message);
-    return res.status(400).json({ message: message });
-  }
-
-  const toUpdate = {};
-  const updateableFields = ['name', 'description'];
-
-  updateableFields.forEach(field => {
-    if (field in req.body) {
-      toUpdate[field] = req.body[field];
-    }
-  });
-
-  Place
-    // all key/value pairs in toUpdate will be updated -- that's what `$set` does
-    .findByIdAndUpdate(req.params.placeid, { $set: toUpdate })
-    .then(place => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error' }));
-})
-
-//app.use('/trip/', tripRouter);
-
+// Referenced by both runServer and closeServer. closeServer
+// assumes runServer has run and set `server` to a server object
 let server;
 
-
-// this function connects to our database, then starts the server
-function runServer(databaseUrl = DATABASE_URL, port = PORT) {
+function runServer() {
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, { useMongoClient: true }, err => {
+    mongoose.connect(DATABASE_URL, { useMongoClient: true }, err => {
       if (err) {
         return reject(err);
       }
-      server = app.listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
-        resolve();
-      })
+      server = app
+        .listen(PORT, () => {
+          console.log(`Your app is listening on port ${PORT}`);
+          resolve();
+        })
         .on('error', err => {
           mongoose.disconnect();
           reject(err);
@@ -287,7 +75,6 @@ function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   });
 }
 
-// this function closes the server, and returns a promise. 
 function closeServer() {
   return mongoose.disconnect().then(() => {
     return new Promise((resolve, reject) => {
@@ -306,5 +93,4 @@ if (require.main === module) {
   runServer().catch(err => console.error(err));
 }
 
-//app.listen(process.env.PORT || 8080);
-module.exports = { runServer, app, closeServer };
+module.exports = { app, runServer, closeServer };

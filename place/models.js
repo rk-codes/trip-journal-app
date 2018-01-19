@@ -10,6 +10,7 @@ const PlaceSchema = mongoose.Schema({
 PlaceSchema.methods.serialize = function() {
 	console.log("Place schema");
 	return {
+		id: this._id,
 		name: this.name || '',
 		description: this.description || ''
 	}
