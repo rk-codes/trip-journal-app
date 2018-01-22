@@ -35,9 +35,9 @@ app.use(function (req, res, next) {
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/user/', usersRouter);
-app.use('/auth/', authRouter);
-app.use('/', tripRouter);
+app.use('/user', usersRouter);
+app.use('/auth', authRouter);
+app.use('/trips', tripRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 

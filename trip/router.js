@@ -16,14 +16,14 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 
 // GET all trips
-router.get('/trips/', jwtAuth, (req, res) => {
+router.get('/', jwtAuth, (req, res) => {
 
   if(req.user) {
     console.log(req.user.id);
     User.findByUserName(req.user.username).populate({path: 'trips'}).then(function(user) {
       console.log(user.username);
       console.log(user.trips.length); 
-      res.json(user.trips.map(trip => trip));
+      res.json(user.trips.map(trip => trip.serialize()));
     })
    
       .catch(err => {
@@ -37,7 +37,7 @@ router.get('/trips/', jwtAuth, (req, res) => {
 })
 
 // GET a trip by id
-router.get('/trips/:id', jwtAuth, (req, res) => {
+router.get('/:id', jwtAuth, (req, res) => {
   //Trip.findById(req.params.id)
   Trip.findById(req.params.id)
   .then(trip =>res.status(200).json(trip))
@@ -48,7 +48,7 @@ router.get('/trips/:id', jwtAuth, (req, res) => {
 })
 
 // DELETE a trip
-router.delete('/trips/:id', jwtAuth, function(req, res)  {
+router.delete('/:id', jwtAuth, function(req, res)  {
 
   Trip.findByIdAndRemove(req.params.id)
   .then(function(trip) {
@@ -75,8 +75,8 @@ router.delete('/trips/:id', jwtAuth, function(req, res)  {
 })
 
 // POST new trip
-router.post('/trips/', jsonParser, jwtAuth, (req, res) => {
-
+router.post('/', jsonParser, jwtAuth, (req, res) => {
+console.log("POST a trip");
 console.log(req.user);
   const requiredFields = ['name', 'description', 'startDate', 'endDate', 'country'];
   for (let i = 0; i < requiredFields.length; i++) {
@@ -117,7 +117,7 @@ console.log(req.user);
 })
 
 //Update a trip
-router.put('/trips/:id', jwtAuth, jsonParser, (req, res) => {
+router.put('/:id', jwtAuth, jsonParser, (req, res) => {
   // ensure that the id in the request path and the one in request body match
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (
@@ -139,12 +139,12 @@ router.put('/trips/:id', jwtAuth, jsonParser, (req, res) => {
   Trip
     // all key/value pairs in toUpdate will be updated -- that's what `$set` does
     .findByIdAndUpdate(req.params.id, { $set: toUpdate })
-    .then(trip => res.status(200).send(trip))  //Not sending updated values. but db gets updated.
+    .then(trip => res.status(204).end())  //Not sending updated values. but db gets updated.
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
 // GET all places in a trip
-router.get('/trips/:id/places', jwtAuth, (req, res) => {
+router.get('/:id/places', jwtAuth, (req, res) => {
   Trip.findById(req.params.id).populate({path: 'places'})
   .then(trip => res.json(trip.places))
   .catch(err => {
@@ -154,12 +154,15 @@ router.get('/trips/:id/places', jwtAuth, (req, res) => {
 })
 
 //GET a place by id
-router.get('/trips/:tripid/places/:placeid',jwtAuth, (req, res) => {
+router.get('/:tripid/places/:placeid',jwtAuth, (req, res) => {
   Place.findById(req.params.placeid)
   .then(place => {
-    console.log(place.trip);
+    console.log(place.trip.constructor.name);
+
+    console.log(typeof(place.trip));
     console.log(req.params.tripid);
-    if(place.trip === req.params.tripid) {
+     console.log(typeof(req.params.tripid));
+    if(place.trip.toString() === req.params.tripid) {
       res.json(place)
     } else{
       res.status(400).json("Trip does'nt contain the place");
@@ -168,7 +171,7 @@ router.get('/trips/:tripid/places/:placeid',jwtAuth, (req, res) => {
 })
 
 //POST a new place in a trip
-router.post('/trips/:id/places', jwtAuth, jsonParser, (req, res) => {
+router.post('/:id/places', jwtAuth, jsonParser, (req, res) => {
   const requiredFields = ['name', 'description'];
   for (let i = 0; i < requiredFields.length; i++) {
       const field = requiredFields[i];
@@ -199,7 +202,7 @@ router.post('/trips/:id/places', jwtAuth, jsonParser, (req, res) => {
   })
 
 //DELETE a place in a trip
-router.delete('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
+router.delete('/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
   Place.findByIdAndRemove(req.params.placeid)
   .then(function(place) {
     if(place) {
@@ -224,7 +227,7 @@ router.delete('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) 
 })
 
 //Update a place in a trip
-router.put('/trips/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
+router.put('/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
    // ensure that the id in the request path and the one in request body match
   if (!(req.params.placeid && req.body.id && req.params.placeid === req.body.id)) {
     const message = (
