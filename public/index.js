@@ -100,8 +100,8 @@ function placeToHtml(place, trip, isPlaceListDisplay=true) {
 	<li class="place-item">
 		<h4 class="placename">${place.name}</h4>
 		<p class-"place-desc">${place.description}</p>
-		<input type="button" value="Edit" class="edit-place-button" data-id="${place.id}" data-trip="${trip.id}">
-		<input type="button" value="Delete" class="delete-place-button" data-id="${place.id}" data-trip="${trip.id}">
+		<input type="button" value="Edit" class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}">
+		<input type="button" value="Delete" class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}">
 	</li>
 	`
 	}
@@ -247,6 +247,7 @@ function deletePlace(tripId, placeId) {
 		},
 		success: function(data) {
 			//showTripsSection(data); TODO
+			getTrip(tripId);
 		},
 		error: function(err) {
 			console.error(err);
@@ -273,6 +274,24 @@ function addPlace(tripId, place){
 	})
 }
 
+function updatePlace(tripId, place) {
+	$.ajax({
+		method: 'PUT',
+		url: `${BASE_URL}trips/${tripId}/places/${place.id}`,
+		headers: {
+			Authorization: `Bearer ${authToken}`
+		},
+		dateType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify(place),
+		success: function(data) {
+			getTrip(tripId);
+		},
+		error: function(err) {
+			console.error(err);
+		}
+	})
+}
 
 //User clicks login on home page
 function handleHomeLogin(){
@@ -470,17 +489,18 @@ function handleDeletePlace() {
 		console.log("Delete clicked");
 		const placeId = $(this).data('id');
 		const tripId = $(this).data('trip');
-		const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		const place = trip.places.find(function(place) {return place.id === placeId});
-		const index = trip.places.indexOf(place);
-		console.log(`TripId: ${tripId} PlaceId: ${placeId} TripPlace: ${trip.places[0].id} Place: ${place}, Index: ${index}`);
-		console.log(placeId);
-		console.log(tripId);
-		console.log(trip.places[0].id);
-		if(index >= 0) {
-			trip.places.splice(index, 1);
-		}
-		showTripDetails(trip);
+		// const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		// const place = trip.places.find(function(place) {return place.id === placeId});
+		// const index = trip.places.indexOf(place);
+		// console.log(`TripId: ${tripId} PlaceId: ${placeId} TripPlace: ${trip.places[0].id} Place: ${place}, Index: ${index}`);
+		// console.log(placeId);
+		// console.log(tripId);
+		// console.log(trip.places[0].id);
+		// if(index >= 0) {
+		// 	trip.places.splice(index, 1);
+		// }
+		// showTripDetails(trip);
+		deletePlace(tripId, placeId);
 	})
 } 
 
@@ -491,23 +511,30 @@ function handleEditPlace() {
 		console.log("Edit clicked");
 		const placeId = $(this).data('id');
 		const tripId = $(this).data('trip');
-		const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		const place = trip.places.find(function(place) {return place.id === placeId});
-		showPlaceDetailsToEdit(trip, place);
+		//const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		//const place = trip.places.find(function(place) {return place.id === placeId});
+		showPlaceDetailsToEdit(tripId, placeId);
 	})
 }
 
 // Handler to update place details
 function handleUpdatePlace() {
 	$('main').on('submit','.edit-place-form', function(event) {
+		event.preventDefault();
 		console.log("Update clicked");
 		const placeId = $(this).data('id');
 		const tripId = $(this).data('trip');
-		const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		const place = trip.places.find(function(place) {return place.id === placeId});
-		place.name = $('.place-name-entry').val();
-		place.description = $('#place-desc').val();
-		showTripDetails(trip);
+		//const trip = user.trips.find(function(trip) {return trip.id === tripId});
+		//const place = trip.places.find(function(place) {return place.id === placeId});
+		const toUpdateData = {
+			id: placeId,
+			name: $('.place-name-entry').val(),
+			description: $('#place-desc').val()
+		}
+		//place.name = $('.place-name-entry').val();
+		//place.description = $('#place-desc').val();
+		//showTripDetails(trip);
+		updatePlace(tripId, toUpdateData);
 	})
 }
 function formatDate(date) {
@@ -576,20 +603,33 @@ function showTripDetailsToEdit(tripId) {
 
 
 // Show place input form to edit
-function showPlaceDetailsToEdit(trip, place) {
-	const content = `
-	<form  data-id="${place.id}" data-trip="${trip.id}" class="edit-place-form">
-		<h2>Edit Place</h2>
-		<label for="placename">Place Name</label>
-		<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
-		<p class="place-description">
-			<label for='place-desc'>Description</label>
-			<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
-		</p>
-		<input type="submit" class="update-button js-update-button" value="Update">
-	</form>
-	`
-	$('main').html(content);
+function showPlaceDetailsToEdit(tripId, placeId) {
+	$.ajax({
+		method: 'GET',
+		url: `${BASE_URL}trips/${tripId}/places/${placeId}`,
+		headers: {
+			Authorization: `Bearer ${authToken}`
+		},
+		contentType: 'application/json',
+		success: function(place) {
+			const content = `
+		<form  data-id="${placeId}" data-trip="${tripId}" class="edit-place-form">
+			<h2>Edit Place</h2>
+			<label for="placename">Place Name</label>
+			<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
+			<p class="place-description">
+				<label for='place-desc'>Description</label>
+				<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
+			</p>
+			<input type="submit" class="update-button js-update-button" value="Update">
+		</form>
+		`
+		$('main').html(content);
+		},
+		error: function(err) {
+			console.error(err);
+		}
+	})
 }
 
 // Handler to navigate back to trips section
