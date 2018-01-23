@@ -51,7 +51,7 @@ const user = {
 	]
 }
 function tripToHtml(trip, isTripListDisplay=true){
-	console.log(trip.id);
+	//console.log(trip.id);
 	let html = "";
 
 	if(isTripListDisplay) {
@@ -66,7 +66,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 	`
 	}
 	else{
-		console.log(trip.places);
+		//console.log(trip.places);
 		html = `
 			<div>
 				<h2>${trip.name}</h2>
@@ -125,7 +125,7 @@ function placesToHtml(trip){
 }
 
 function getTrips() {
-	console.log("Getting trips");
+	//console.log("Getting trips");
 	$.ajax({
 		method: 'GET',
 		url: `${BASE_URL}trips`,
@@ -141,7 +141,7 @@ function getTrips() {
 			showTripsSection(tripData);
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})
 }
@@ -157,10 +157,10 @@ function addTrip(tripData) {
 		contentType: 'application/json',
 		success: function(data) {
 			$('.create-trip-form')[0].reset();
-			showTripsSection(data);
+			getTrips();
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})	
 }
@@ -173,10 +173,10 @@ function deleteTrip(tripId) {
 			Authorization: `Bearer ${authToken}`
 		},
 		success: function(data) {
-			showTripsSection(data);
+			getTrips();
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})
 }
@@ -192,10 +192,10 @@ function updateTrip(tripId, trip) {
 		contentType: 'application/json',
 		data: JSON.stringify(trip),
 		success: function(data) {
-			showTripsSection(data);
+			getTrips();
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})
 }
@@ -212,7 +212,7 @@ function getTrip(tripId) {
 			showTripDetails(tripData);
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})
 }
@@ -220,19 +220,54 @@ function getPlaces(tripId){
 	console.log("Getting places");
 	$.ajax({
 		method: 'GET',
-		url: `${BASE_URL}trips/${tripId},places`,
+		url: `${BASE_URL}trips/${tripId}/places`,
 		dataType: 'json',
 		contentType: 'application/json',
 		data: JSON.stringify(user),
 		success: function(input) {
-			console.log(input);
-			showLogIn();
+			//console.log(input);
+			//showLogIn();
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})
 }
+function deletePlace(tripId, placeId) {
+	$.ajax({
+		method: 'DELETE',
+		url: `${BASE_URL}trips/${tripId}/places/${placeId}`,
+		headers: {
+			Authorization: `Bearer ${authToken}`
+		},
+		success: function(data) {
+			//showTripsSection(data); TODO
+		},
+		error: function(err) {
+			console.error(err);
+		}
+	})
+}
+
+function addPlace(tripId, place){
+	$.ajax({
+		method: 'POST',
+		url: `${BASE_URL}trips/${tripId}/places`,
+		headers: {
+			Authorization: `Bearer ${authToken}`
+		},
+		data: JSON.stringify(place),
+		contentType: 'application/json',
+		success: function(trip) {
+			//showTripDetails(trip); TODO
+			getTrip(tripId);
+		},
+		error: function(err) {
+			console.error(err);
+		}
+	})
+}
+
 
 //User clicks login on home page
 function handleHomeLogin(){
@@ -240,12 +275,7 @@ function handleHomeLogin(){
 	 	console.log('Login clicked');
 	 	event.preventDefault();
 	 	showLogIn();
-	 	//$('.trips-container').html(tripsToHtml(user.trips));
-	 	//$('.trips-section').show();
 	})
-	// 	$('.triplist').html(tripsToHtml());
-	// })
-	//$('.trips-container').html(tripsToHtml(user.trips));
 }
 
 //User clicks sign up on home page
@@ -262,12 +292,6 @@ function handleSignUpSubmission(){
  $('main').on('submit', '.signup-form', function(event) {
  	event.preventDefault();
  	console.log('Signup form submitted');
- 	// 	const username = $('input[name="username"]');
- 	// 	console.log(username);
-		// const password = $('input[name="password"]');
-		// const firstName = $('input[name="firstname"]');
-		// const lastName = $('input[name="lastname"]');
-
 		const username = $('#username').val();
  		console.log(username);
 		const password = $('#password').val();
@@ -285,7 +309,7 @@ function handleSignUpSubmission(){
 				showLogIn();
 			},
 			error: function(err) {
-			console.log(err);
+			console.error(err);
 			}
 
 		})
@@ -313,7 +337,7 @@ function handleLoginSubmission(){
 				getTrips();
 			},
 			error: function(err) {
-				console.log(err);
+				console.error(err);
 			}
 		})
 	})
@@ -342,6 +366,7 @@ function handleAddNewTrip(){
 //User creates a new trip
 function handleCreatNewTrip() {
 	$('main').on('submit','.create-trip-form', function(event) {
+		event.preventDefault();
 		const tripData = {
 			name: $('.js-trip-name-entry').val(),
 			startDate:  $('.js-trip-start-entry').val(),
@@ -350,8 +375,6 @@ function handleCreatNewTrip() {
 			description: $('#trip-desc').val()
 		}
 		addTrip(tripData);
-		// $('.create-trip-form')[0].reset();
-		// showTripsSection();	
 
 	})
 }
@@ -361,33 +384,16 @@ function handleDisplayTripDetails() {
 	$('main').on('click', '.tripname',function(event){
 		const tripId = $(this).data('id');
 		console.log(tripId);
-		// const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		// if(trip) {
-		// 	displayTripDetails(trip);
-		// } else {
-		// 	// TODO:Error message
-		// }
 		getTrip(tripId);
 		
 	})
 }
-// function displayTripDetails(trip) {
-// 	showTripDetails(trip);
-	
-// }
-
 
 // Handler to delete a trip
 function handleDeleteTrip() {
 	$('main').on('click','.delete-trip-button', function(event) {
 		console.log("Delete clicked");
 		const tripId = $(this).data('id');
-		// const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		// const index = user.trips.indexOf(trip);
-		// if(index >= 0) {
-		// 	user.trips.splice(index, 1);
-		// }
-		// showTripsSection();
 		deleteTrip(tripId);
 	})
 }
@@ -395,18 +401,11 @@ function handleDeleteTrip() {
 // Handler to update trip details
 function handleUpdateTrip() {
 	$('main').on('submit','.edit-trip-form', function(event) {
+		event.preventDefault();
 		console.log("Update clicked");
 		const tripId = $(this).data('id');
-		// const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		// trip.name = $('.trip-name').val();
-		// trip.startDate = new Date($('.start-date').val());
-		// trip.endDate = new Date($('.end-date').val());
-		// trip.country = $('.country').val();
-		// trip.description = $('.description').val();
-		// console.log("Start:" + trip.startDate.toString());
-		// showTripsSection();
-
 		const toUpdateData = {
+			id: tripId,
 			name: $('.trip-name').val(),
 			startDate: new Date($('.start-date').val()),
 			endDate: new Date($('.end-date').val()),
@@ -436,14 +435,17 @@ function handleAddPlaceToTrip() {
 }
 function handleCreatePlaceInfo() {
 	$('main').on('submit', '.add-place-form', function(event) {
+		event.preventDefault();
 		console.log("Add clicked");
 		const placeName = $('.js-place-name-entry').val();
 		const placeDescription = $('#place-desc').val();
 		$('.add-place-form')[0].reset();
 		const tripId = $(this).data('id');
-		const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		addPlaceToTrip(trip, placeName, placeDescription);
-		showTripDetails(trip);
+		const placeData = {
+			name: $('.js-place-name-entry').val(),
+			description: $('#place-desc').val()
+		}
+		addPlace(tripId, placeData);
 	})
 }
 
@@ -502,6 +504,16 @@ function handleUpdatePlace() {
 		showTripDetails(trip);
 	})
 }
+function formatDate(date) {
+    const d = new Date(date)
+    let month = `${(d.getMonth() + 1)}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month.length < 2) month = `0${month}`;
+    if (day.length < 2) day = `0${day}`;
+    return `${year}-${month}-${day}`
+}
 
 // Show trip details form to edit
 function showTripDetailsToEdit(tripId) {
@@ -526,15 +538,17 @@ function showTripDetailsToEdit(tripId) {
 		contentType: 'application/json',
 		success: function(trip) {
 			//showTripDetails(tripData);
+			const startDate = formatDate(trip.startDate);
+			const endDate = formatDate(trip.endDate);
 			const content = `
-		<form action="#" class="edit-trip-form" data-id="${trip.id}">
+		<form class="edit-trip-form" data-id="${trip._id}">
 				<h2>Edit Trip</h2>
 				<label for="tripname">Trip Name</label>
 				<input type="text" name="tripname" value="${trip.name}" class="trip-name"><br>
 				<label for="startdate">Start Date</label>
-				<input type="date" name="startdate" value="${trip.startDate}" class="start-date"><br>
+				<input type="date" name="startdate" value="${startDate}" class="start-date"><br>
 				<label for="enddate">End Date</label>
-				<input type="date" name="enddate" value="${trip.endDate}" class="end-date"><br>
+				<input type="date" name="enddate" value="${endDate}" class="end-date"><br>
 				<label for="country">Country</label>
 				<input type="text" name="country" value="${trip.country}" class="country"><br>
 				<p class="trip-description">
@@ -548,7 +562,7 @@ function showTripDetailsToEdit(tripId) {
 
 		},
 		error: function(err) {
-			console.log(err);
+			console.error(err);
 		}
 	})	
 
@@ -558,7 +572,7 @@ function showTripDetailsToEdit(tripId) {
 // Show place input form to edit
 function showPlaceDetailsToEdit(trip, place) {
 	const content = `
-	<form action="#" data-id="${place.id}" data-trip="${trip.id}" class="edit-place-form">
+	<form  data-id="${place.id}" data-trip="${trip.id}" class="edit-place-form">
 		<h2>Edit Place</h2>
 		<label for="placename">Place Name</label>
 		<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
@@ -582,7 +596,7 @@ function handleBackToTrips() {
 function showSignUp() {
 	const content = `
 	<section class="signup-section">
-			<form action="#" class="signup-form">
+			<form class="signup-form">
 				<h2>Sign Up</h2>
 				<label for="firstname">First name</label>
 				<input type="text" name="firstname" id="firstname"><br>
@@ -602,7 +616,7 @@ function showSignUp() {
 function showLogIn() {
 	const content = `
 	<section class="login-section">
-			<form action="#" class="login-form">
+			<form class="login-form">
 				<h2>Login</h2>
 				<label for="username">Username</label>
 				<input type="text" name="username" id="login-username"><br>
@@ -627,13 +641,15 @@ function showTripsSection(tripData) {
 		</section>
 	`
 	$('main').html(content);
+	console.log("***********************");
+	console.log(tripData);
 	$('.trips-container').html(tripsToHtml(tripData));
 }
 // Show form to enter trip details
 function showCreateTrip() {
 	const content = `
 	<section class="create-trip-section"> 
-			<form action="#" class="create-trip-form">
+			<form class="create-trip-form">
 				<h2>Create Trip</h2>
 				<label for="tripname">Trip Name</label>
 				<input type="text" name="tripname" class="js-trip-name-entry"><br>
@@ -672,7 +688,7 @@ function showTripDetails(trip) {
 }
 function showAddPlace(tripId) {
 	const content = `
-	<form action="#" data-id="${tripId}" class="add-place-form">
+	<form  data-id="${tripId}" class="add-place-form">
 		<label for="placename">Place Name</label>
 		<input type="text" name="placename" class="js-place-name-entry"><br>
 		<p class="place-description">
