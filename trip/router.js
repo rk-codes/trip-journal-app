@@ -37,9 +37,19 @@ router.get('/', jwtAuth, (req, res) => {
 })
 
 // GET a trip by id
+// router.get('/:id', jwtAuth, (req, res) => {
+//   //Trip.findById(req.params.id)
+//   Trip.findById(req.params.id)
+//   .then(trip =>res.status(200).json(trip))
+//   .catch(err => {
+//     console.error(err);
+//     res.status(500).json({error: 'Internal Server Error'});
+//   });
+// })
+
 router.get('/:id', jwtAuth, (req, res) => {
   //Trip.findById(req.params.id)
-  Trip.findById(req.params.id)
+  Trip.findById(req.params.id).populate({path: 'places'})
   .then(trip =>res.status(200).json(trip))
   .catch(err => {
     console.error(err);
@@ -191,12 +201,12 @@ router.post('/:id/places', jwtAuth, jsonParser, (req, res) => {
       Trip.findByIdAndUpdate(req.params.id,
         { $push: {"places": place} },
       {  safe: true, upsert: true},
-      function(err, model) {
+      function(err, trip) {
             if(err){
               console.log(err);
               return res.send(err);
              }
-          return res.json(place.serialize());
+          return res.json(trip.serialize());
         })
     })
   })
