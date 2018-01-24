@@ -97,7 +97,7 @@ console.log(req.user);
           return res.status(400).send(message);
       }
     }
-    
+    let aTrip;
   Trip.create({
     user: req.user.id,
     name: req.body.name,
@@ -107,17 +107,14 @@ console.log(req.user);
     country: req.body.country 
   })
   .then(function(trip) {
-    User.findByIdAndUpdate(req.user.id, 
+    aTrip = trip;
+    return User.findByIdAndUpdate(req.user.id, 
       { $push: {"trips": trip} },
-      {  safe: true, upsert: true},
-          function(err, model) {
-            if(err){
-              console.log(err);
-              return res.send(err);
-             }
-          return res.status(200).json(trip.serialize());
-    });
+      {  safe: true, upsert: true})         
 
+  })
+  .then(function(user) {
+    res.status(201).json(aTrip.serialize());
   })
   .catch(err => {
     console.error(err);
@@ -198,20 +195,18 @@ router.post('/:id/places', jwtAuth, jsonParser, (req, res) => {
       description: req.body.description
     })
     .then(function(place) {
-      Trip.findByIdAndUpdate(req.params.id,
+      return Trip.findByIdAndUpdate(req.params.id,
         { $push: {"places": place} },
-      {  safe: true, upsert: true},
-      function(err, trip) {
-            if(err){
-              console.log(err);
-              return res.send(err);
-             }
-             console.log("***********");
-             console.log(req.params.id);
-            // console.log(trip);
-          return res.json(trip.serialize());
-        })
+      {  safe: true, upsert: true})
+
     })
+      .then(function(trip) {
+        res.json(trip)
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      })
   })
 
 //DELETE a place in a trip
