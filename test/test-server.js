@@ -24,29 +24,6 @@ let newTestUser = {
 
 let authToken;
 
-
-// function generateToken(){
-// 	const username = 'exampleUser';
-// 	const password = 'examplePass';
-// 	const firstName = 'First';
-// 	const lastName = 'Last';
-
-// 	const token = jwt.sign(
-// 			{
-// 				user: {	username,
-// 						firstName,
-// 						lastName},
-// 			},
-// 				JWT_SECRET,
-// 			{
-// 				algorithm: 'HS256',
-// 				subject: username,
-// 				expiresIn: '7d'
-// 			}
-// 		);
-// 	return token;
-// }
-
 function seedTripData(userId) {
 	console.info("seeding trip data");
 	const seedData = [];
@@ -76,13 +53,6 @@ function seedTripData(userId) {
 
 function generateTestUser() {
 	console.info("generateTestUser");
-	// return {
-	// 	username: 'exampleUser',
-	// 	password: 'examplePass',
-	// 	firstName: 'First',
-	// 	lastName: 'Last',
-	// 	trips: [generateTripData()]
-	// }
 	return User.create({
 		username: 'exampleUser',
 		password: 'examplePass',
@@ -94,25 +64,20 @@ function generateTestUser() {
 function generateTripData(userId) {
 	return {
 		user: [mongoose.Types.ObjectId(userId)],
-		name: faker.Lorem.sentence(),
-		description: faker.Lorem.paragraph(),
+		name: faker.lorem.sentence(),
+		description: faker.lorem.paragraph(),
 		startDate: new Date(2016, 12, 04),
 		endDate: new Date(2016, 12, 20),
-		country: faker.random.uk_country()
+		country: faker.address.country()
 		//places: [generatePlaceData(), generatePlaceData()] 
 	}
 }
 
 function generatePlaceData(tripId) {
-	// return {
-	// 	name: faker.lorem.word(),
-	// 	description: faker.lorem.paragraph(),
-	// 	trip: mongoose.Types.ObjectId(tripId)
-	// }
 
 	return Place.create({
-		name: faker.Lorem.sentence(),
-		description: faker.Lorem.paragraph(),
+		name: faker.lorem.sentence(),
+		description: faker.lorem.paragraph(),
 		trip: mongoose.Types.ObjectId(tripId)
 	})
 	.then(function(place) {
@@ -251,7 +216,7 @@ describe('User', function() {
 			.set('authorization', `Bearer ${authToken}`)
 			.send(newTrip)
 			.then(function(res) {
-				res.should.have.status(200);
+				res.should.have.status(201);
 				res.should.be.json;
 				res.body.should.be.a('object');
 				res.body.should.include.keys('name', 'description', 'startDate', 'endDate', 'country', 'places');
@@ -286,6 +251,54 @@ describe('User', function() {
 			});
 		});
 
+		it('should get places in a trip', function() {
+			let tripId;
+			let newPlace;
+			return Trip.findOne()
+			.then(function(trip) {
+				tripId = trip.id;
+				newPlace = generatePlaceData(tripId);
+				return chai.request(app)
+				.get(`/trips/${tripId}/places`)
+				.set('authorization', `Bearer ${authToken}`)
+				//.send(newPlace)
+			})
+			.then(function(res) {
+				res.should.have.status(200);
+				res.should.be.json;
+				res.body.should.be.a('array');
+				res.body.forEach(function(item){
+					item.should.include.keys('name', 'description');
+				})
+			})
+		})
+
+		it('should post a new place in a trip', function() {
+			let newPlace = {
+				name: "New Place",
+				description: "Place description"
+			}
+			console.log("$$$$$$");
+			console.log(tripId);
+			return Trip.findOne()
+			.then(function(trip) {
+				return chai.request(app)
+				.post(`/trips/${trip._id}/places`)
+				.set('authorization', `Bearer ${authToken}`)
+				.send(newPlace)
+			})
+			.then(function(res) {
+				console.log(res.body);
+				res.should.have.status(200);
+				res.should.be.json;
+				res.body.should.be.a('object');
+				res.body.places.should.be.a('array');
+				//res.body.places.should.have.length.of.at.least(1);
+				// res.body.should.include.keys('name', 'description');
+				// res.body.name.should.equal(newPlace.name);
+				// res.body.description.should.equal(newPlace.description);
+			})
+		})
 
 	})
 })
