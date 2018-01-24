@@ -58,7 +58,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
-		<span>${formatDate(trip.startDate)} to ${formatDate(trip.endDate)} </span>
+		<span>From: ${formatDate(trip.startDate)}  To: ${formatDate(trip.endDate)} </span>
 		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
@@ -571,7 +571,8 @@ function showTripDetailsToEdit(tripId) {
 			const endDate = formatDate(trip.endDate);
 			const content = `
 		<form class="edit-trip-form" data-id="${trip._id}">
-				<h2>Edit Trip</h2>
+			<fieldset>
+				<legend>Edit Trip</legend>
 				<label for="tripname">Trip Name</label>
 				<input type="text" name="tripname" value="${trip.name}" class="trip-name"><br>
 				<label for="startdate">Start Date</label>
@@ -585,6 +586,7 @@ function showTripDetailsToEdit(tripId) {
 					<textarea id="trip-desc" rows="9" cols="50" class="description">${trip.description}</textarea>
 				</p>
 				<input type="submit" class="update-trip-button" value="Update">
+			</fieldset>
 		</form>	
 		`
 		$('main').html(content);
@@ -610,14 +612,16 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 		success: function(place) {
 			const content = `
 		<form  data-id="${placeId}" data-trip="${tripId}" class="edit-place-form">
-			<h2>Edit Place</h2>
-			<label for="placename">Place Name</label>
-			<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
-			<p class="place-description">
-				<label for='place-desc'>Description</label>
-				<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
-			</p>
-			<input type="submit" class="update-button js-update-button" value="Update">
+			<fieldset>
+				<legend>Edit Place</legend>
+				<label for="placename">Place Name</label>
+				<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
+				<p class="place-description">
+					<label for='place-desc'>Description</label>
+					<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
+				</p>
+				<input type="submit" class="update-button js-update-button" value="Update">
+			 </fieldset>
 		</form>
 		`
 		$('main').html(content);
@@ -639,16 +643,18 @@ function showSignUp() {
 	const content = `
 	<section class="signup-section">
 			<form class="signup-form">
-				<h2>Sign Up</h2>
-				<label for="firstname">First name</label>
-				<input type="text" name="firstname" id="firstname"><br>
-				<label for="lastname">Last name</label>
-				<input type="text" name="lastname" id="lastname"><br>
-				<label for="username">Username</label>
-				<input type="text" name="username" id="username"><br>
-				<label for="password">Password</label>
-				<input type="password" name="password" id="password"><br>
-				<input type="submit" class="signup-button js-signup-button" value="Sign Up">
+				<fieldset>
+					<legend>Sign Up</legend>
+					<label for="firstname">First name</label>
+					<input type="text" name="firstname" id="firstname"><br>
+					<label for="lastname">Last name</label>
+					<input type="text" name="lastname" id="lastname"><br>
+					<label for="username">Username</label>
+					<input type="text" name="username" id="username"><br>
+					<label for="password">Password</label>
+					<input type="password" name="password" id="password"><br>
+					<input type="submit" class="signup-button js-signup-button" value="Sign Up">
+				</fieldset>
 			</form>		
 		</section>
 	`
@@ -658,13 +664,15 @@ function showSignUp() {
 function showLogIn() {
 	const content = `
 	<section class="login-section">
+		<h3>Login</h3>
 			<form class="login-form">
-				<h2>Login</h2>
-				<label for="username">Username</label>
-				<input type="text" name="username" id="login-username"><br>
-				<label for="password">Password</label>
-				<input type="password" name="password" id="login-password"><br>
-				<input type="submit" class="login-button js-login-button" value="Login">
+				<fieldset>
+					<label for="username">Username</label>
+					<input type="text" name="username" id="login-username"><br>
+					<label for="password">Password</label>
+					<input type="password" name="password" id="login-password"><br>
+					<input type="submit" class="login-button js-login-button" value="Login">
+				</fieldset>
 			</form>
 		</section>
 	`
@@ -704,20 +712,22 @@ function showCreateTrip() {
 	const content = `
 	<section class="create-trip-section"> 
 			<form class="create-trip-form">
-				<h2>Create Trip</h2>
-				<label for="tripname">Trip Name</label>
-				<input type="text" name="tripname" class="js-trip-name-entry"><br>
-				<label for="startdate">Start Date</label>
-				<input type="date" name="startdate" class="js-trip-start-entry"><br>
-				<label for="enddate">End Date</label>
-				<input type="date" name="enddate" class="js-trip-end-entry"><br>
-				<label for="country">Country</label>
-				<input type="text" name="country" class="js-trip-country-entry"><br>
-				<p class="trip-description">
-					<label for='trip-desc'>Trip Description</label>
-					<textarea id="trip-desc" rows="9" cols="50"></textarea>
-				</p>
-				<input type="submit" class="create-trip-button js-create-trip-button" value="Create Trip">
+				<fieldset>
+					<legend>Create Trip</legend>
+					<label for="tripname">Trip Name</label>
+					<input type="text" name="tripname" class="js-trip-name-entry"><br>
+					<label for="startdate">Start Date</label>
+					<input type="date" name="startdate" class="js-trip-start-entry"><br>
+					<label for="enddate">End Date</label>
+					<input type="date" name="enddate" class="js-trip-end-entry"><br>
+					<label for="country">Country</label>
+					<input type="text" name="country" class="js-trip-country-entry"><br>
+					<p class="trip-description">
+						<label for='trip-desc'>Trip Description</label>
+						<textarea id="trip-desc" rows="9" cols="50"></textarea>
+					</p>
+					<input type="submit" class="create-trip-button js-create-trip-button" value="Create Trip">
+				</fieldset>
 			</form>	
 		
 		</section>
