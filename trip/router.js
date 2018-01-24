@@ -206,6 +206,9 @@ router.post('/:id/places', jwtAuth, jsonParser, (req, res) => {
               console.log(err);
               return res.send(err);
              }
+             console.log("***********");
+             console.log(req.params.id);
+            // console.log(trip);
           return res.json(trip.serialize());
         })
     })

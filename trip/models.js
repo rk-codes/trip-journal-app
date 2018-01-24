@@ -36,7 +36,7 @@ TripSchema.methods.serialize = function() {
 		startDate: this.startDate || '',
 		endDate: this.endDate || '',
 		country: this.country || '',
-		places: this.places.map(place => place.serialize()) || []
+		places: this.places.map(place => place) || []
 	}
 }
 
