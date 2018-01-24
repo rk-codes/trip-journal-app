@@ -45,6 +45,16 @@ header {
 	border: 1px solid grey;
 	padding: 20px;
 }
+.place-item {
+	list-style: none;
+}
+.trip-info .dates{
+	display: inline;
+	color: grey;
+}
+.trip-info h3 {
+	display: inline;
+}
 .trip-description * {
 	vertical-align: middle;
 }
