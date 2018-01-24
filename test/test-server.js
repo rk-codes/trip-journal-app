@@ -22,32 +22,30 @@ let newTestUser = {
 	'lastname': 'Last'
 }
 
-let testUser = 'demouser';
-let testPassword = 'demopassword';
 let authToken;
 
 
-function generateToken(){
-	const username = 'exampleUser';
-	const password = 'examplePass';
-	const firstName = 'First';
-	const lastName = 'Last';
+// function generateToken(){
+// 	const username = 'exampleUser';
+// 	const password = 'examplePass';
+// 	const firstName = 'First';
+// 	const lastName = 'Last';
 
-	const token = jwt.sign(
-			{
-				user: {	username,
-						firstName,
-						lastName},
-			},
-				JWT_SECRET,
-			{
-				algorithm: 'HS256',
-				subject: username,
-				expiresIn: '7d'
-			}
-		);
-	return token;
-}
+// 	const token = jwt.sign(
+// 			{
+// 				user: {	username,
+// 						firstName,
+// 						lastName},
+// 			},
+// 				JWT_SECRET,
+// 			{
+// 				algorithm: 'HS256',
+// 				subject: username,
+// 				expiresIn: '7d'
+// 			}
+// 		);
+// 	return token;
+// }
 
 function seedTripData(userId) {
 	console.info("seeding trip data");
@@ -60,12 +58,15 @@ function seedTripData(userId) {
 
   	return Trip.create(generateTripData(userId))
   	.then(function(trip) {
+  		tripId = trip._id;
+  		console.log("seedTripData");
+  		console.log(tripId);
   		User.findByIdAndUpdate(userId, 
   			{ $push: {"trips": trip} },
 			{  safe: true, upsert: true},
        		function(err, model) {
          		if(err){
-        			console.log(err);
+        			console.error(err);
         			return ;
         		 }
         	return ;
@@ -83,12 +84,10 @@ function generateTestUser() {
 	// 	trips: [generateTripData()]
 	// }
 	return User.create({
-
 		username: 'exampleUser',
 		password: 'examplePass',
 		firstName: 'First',
 		lastName: 'Last'
-		//trips: [mongoose.Schema.Types.ObjectId("123")]
 	})
 }
 
@@ -105,11 +104,29 @@ function generateTripData(userId) {
 }
 
 function generatePlaceData(tripId) {
-	return {
-		name: faker.lorem.word(),
-		description: faker.lorem.paragraph(),
+	// return {
+	// 	name: faker.lorem.word(),
+	// 	description: faker.lorem.paragraph(),
+	// 	trip: mongoose.Types.ObjectId(tripId)
+	// }
+
+	return Place.create({
+		name: faker.Lorem.sentence(),
+		description: faker.Lorem.paragraph(),
 		trip: mongoose.Types.ObjectId(tripId)
-	}
+	})
+	.then(function(place) {
+		Trip.findByIdAndUpdate(tripId, 
+  			{ $push: {"places": place} },
+			{  safe: true, upsert: true},
+       		function(err, model) {
+         		if(err){
+        			console.log(err);
+        			return ;
+        		 }
+        	return ;
+		})
+	})
 }
 
 function tearDownDb() {
@@ -117,7 +134,7 @@ function tearDownDb() {
   return mongoose.connection.dropDatabase();
 }
 
-describe('Trip test API resources', function() {
+describe('User', function() {
 		let testUser;
 		let newUserId;
 		let tripId;
@@ -141,7 +158,6 @@ describe('Trip test API resources', function() {
 			.then(function(user) {
 				console.log(user._id);
 				newUserId = user._id;
-				//Trip.create(generateTripData(newUserId));
 			})
 			.catch((err) => {
 	            console.log(err)
@@ -149,20 +165,20 @@ describe('Trip test API resources', function() {
 		});
 
 
-		// it('should login registered user', function() {
+		it('should login registered user', function() {
 		
-		// 	return chai.request(app)
-		// 	.post('/auth/login')
-		// 	.send({name: 'demouser', password: 'demopassword'})
-		// 	.then(function(res) {
-		// 		res.should.have.status(200);
-		// 		authToken = res.body.authToken;
-		// 		console.log(authToken);
-		// 	})
-		// 	.catch((err) => {
-  //               console.log(err)
-  //           });
-		// })
+			return chai.request(app)
+			.post('/auth/login')
+			.send(newTestUser)
+			.then(function(res) {
+				res.should.have.status(200);
+				authToken = res.body.authToken;
+				console.log(authToken);
+			})
+			.catch((err) => {
+                console.log(err)
+            });
+		})
 	
 
  	describe('Trips', function() {
@@ -176,11 +192,10 @@ describe('Trip test API resources', function() {
   		});
 
 		it('should return all trips on GET', function() {
-			const token = generateToken();
 			//seedTripData();
 			return chai.request(app)
 			.get('/trips')
-			.set('authorization', `Bearer ${token}`)
+			.set('authorization', `Bearer ${authToken}`)
 			.then(function(res) {
 				res.should.have.status(200);
 				res.should.be.json;
@@ -189,37 +204,37 @@ describe('Trip test API resources', function() {
 					trip.should.be.a('object');
 					trip.should.include.keys('name', 'description', 'startDate', 'endDate', 'country', 'places');
 				});
-				tripId = res.body[0]._id;
-				console.log(tripId);
+				//tripId = res.body[0].id;
 			})
 			.catch((err) => {
                 console.log(err)
             });
 		});
 
-		// it('should return one trip on GET by id', function() {
-		// 	const token = generateToken();
-		// 	//seedTripData();
-		// 	return chai.request(app)
-		// 	.get(`/trips/${tripId}`)
-		// 	.set('authorization', `Bearer ${token}`)
-		// 	.then(function(res) {
-		// 		res.should.have.status(200);
-		// 		res.should.be.json;
-		// 		res.body.should.be.a('object');
-		// 		//res.body.id.should.equal(tripId);
-		// 		// res.body.forEach(function(trip) {
-		// 		// 	trip.should.be.a('object');
-		// 		// 	trip.should.include.keys('name', 'description', 'startDate', 'endDate', 'country', 'places');
-		// 		// });
-		// 	});
-		// })
+		it('should return one trip on GET by id', function() {
+			let tripId
+			return Trip.findOne()
+			.then(function(trip) {
+				tripId = trip.id;
+				return chai.request(app)
+				.get(`/trips/${trip.id}`)
+				.set('authorization', `Bearer ${authToken}`)
+			})
+			.then(function(res) {
+				res.should.have.status(200);
+				res.should.be.json;
+				res.body.should.be.a('object');
+				res.body._id.should.equal(tripId);
+			})
+		})
 
 		it('should delete one trip by id', function() {
-			const token = generateToken();
-			return chai.request(app)
-			.delete(`/trips/${tripId}`)
-			.set('authorization', `Bearer ${token}`)
+			return Trip.findOne()
+			.then(function(trip) {
+				return chai.request(app)
+				.delete(`/trips/${trip.id}`)
+				.set('authorization', `Bearer ${authToken}`)
+			})
 			.then(function(res) {
 				res.should.have.status(200);
 				return Trip.findById(tripId)
@@ -230,11 +245,10 @@ describe('Trip test API resources', function() {
 		});
 
 		it('should post a new trip', function() {
-			const token = generateToken();
 			let newTrip = generateTripData(newUserId);
 			return chai.request(app)
 			.post('/trips/')
-			.set('authorization', `Bearer ${token}`)
+			.set('authorization', `Bearer ${authToken}`)
 			.send(newTrip)
 			.then(function(res) {
 				res.should.have.status(200);
@@ -250,7 +264,6 @@ describe('Trip test API resources', function() {
 		});
 
 		it('should update a trip', function() {
-			const token = generateToken();
 			const updateData = {
 				name: "Trip One",
 				country: "USA"
@@ -260,11 +273,11 @@ describe('Trip test API resources', function() {
 				updateData.id = trip.id;
 				return chai.request(app)
 				.put(`/trips/${trip.id}`)
-				.set('authorization', `Bearer ${token}`)
+				.set('authorization', `Bearer ${authToken}`)
 				.send(updateData)
 			})
 			.then(function(res) {
-				res.should.have.status(200);
+				res.should.have.status(204);
 				return Trip.findById(updateData.id)
 			})
 			.then(function(trip) {
@@ -273,7 +286,7 @@ describe('Trip test API resources', function() {
 			});
 		});
 
+
 	})
 })
 
-// 
