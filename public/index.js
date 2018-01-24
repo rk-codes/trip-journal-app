@@ -58,7 +58,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
-		<span>${trip.startDate} - ${trip.endDate} </span>
+		<span>${formatDate(trip.startDate)} to ${formatDate(trip.endDate)} </span>
 		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
@@ -70,7 +70,8 @@ function tripToHtml(trip, isTripListDisplay=true){
 		html = `
 			<div>
 				<h2>${trip.name}</h2>
-
+				<span>${formatDate(trip.startDate)} to ${formatDate(trip.endDate)}</span>
+				<p>${trip.description}</h2>
 				${placesToHtml(trip)}
 			</div>
 		`
@@ -122,10 +123,7 @@ function placesToHtml(trip){
 			return placeToHtml(place, trip);
 		}).join('\n')}
 	</ul>
-	`: `<span>No places to display</span>`
-	// if(trips.places.length > 0) {
-	// 	getPlaces(trip._id);
-	// }
+	`: `<p>No places added</p>`
 }
 
 function getTrips() {
@@ -377,7 +375,6 @@ function handleUserHomeClick() {
 function handleUserLogOutClick() {
 	$('.nav-container').on('click','.logout-link', function(event) {
 		console.log("Logoutclicked");
-		event.preventDefault();
 		showLogIn();
 	})
 }
@@ -399,7 +396,6 @@ function handleCreatNewTrip() {
 			description: $('#trip-desc').val()
 		}
 		addTrip(tripData);
-
 	})
 }
 
@@ -635,7 +631,7 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 // Handler to navigate back to trips section
 function handleBackToTrips() {
 	$('main').on('click', '.back-button', function(event) {
-		showTripsSection();
+		getTrips();
 	})
 }
 // Show sign up form
@@ -737,7 +733,7 @@ function showTripDetails(trip) {
 			<div class="trip-places-list">
 			</div>
 			<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
-			<input type="button" data-id="${trip._id}" class="back-button" value="Back">
+			<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
 		</section>
 	`
 	$('main').html(content);

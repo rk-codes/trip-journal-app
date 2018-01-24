@@ -4,13 +4,13 @@
 header {
 	background-color: cyan;
 }
-header ul{
+.nav-container ul{
 	text-decoration: none;
-	list-style: none;
 	text-align: right;
 }
-.nav-container {
-	text-align: right;
+.nav-container li{
+	list-style: none;
+	display: inline-block;;
 }
 .nav-links a {
 	text-decoration: none;
