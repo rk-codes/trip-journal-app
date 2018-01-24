@@ -1,55 +1,6 @@
 const BASE_URL = 'http://localhost:8080/';
 let authToken;
 
-const user = {
-	username: "user",
-	password: "password",
-	trips: [ {
-		id: "0a",
-		name: "Trip 1",
-		description: "My first trip",
-		startDate: new Date(2016, 12, 04),
-		endDate: new Date(2016, 12, 20)	,
-		country: "India",
-		places: [{
-			id: "00a",
-			name: "Place One",
-			description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-		},
-		{
-			id: "01a",
-			name: "Place Two",
-			description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. "
-		}]
-	},
-	{
-		id: "1a",
-		name: "Trip 2",
-		description: "My second trip",
-		startDate: new Date(2017, 11, 04),
-		endDate: new Date(2017, 11, 20),
-		country: "US",
-		places: [{
-			id: "10a",
-			name: "ertrt",
-			description: "trytytu"
-		}]
-	},
-	{
-		id: "2a",
-		name: "Trip 3",
-		description: "My third trip",
-		startDate: new Date(2017, 12, 04),
-		endDate: new Date(2017, 12, 20),
-		country: "Mexico",
-		places: [{
-			id: "20a",
-			name: "ertrt",
-			description: "trytytu"
-		}]	
-	}
-	]
-}
 function tripToHtml(trip, isTripListDisplay=true){
 	//console.log(trip.id);
 	let html = "";
@@ -58,7 +9,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
-		<span>From: ${formatDate(trip.startDate)}  To: ${formatDate(trip.endDate)} </span>
+		<span>Start: ${formatDate(trip.startDate)}  End: ${formatDate(trip.endDate)} </span>
 		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
@@ -68,9 +19,9 @@ function tripToHtml(trip, isTripListDisplay=true){
 	else{
 		//console.log(trip.places);
 		html = `
-			<div>
-				<h2>${trip.name}</h2>
-				<span>${formatDate(trip.startDate)} to ${formatDate(trip.endDate)}</span>
+			<div class="trip-info">
+				<h3>${trip.name}</h3>
+				<span class="dates">Start: ${formatDate(trip.startDate)} End: ${formatDate(trip.endDate)}</span>
 				<p>${trip.description}</h2>
 				${placesToHtml(trip)}
 			</div>
@@ -136,7 +87,6 @@ function getTrips() {
 		},
 		dataType: 'json',
 		contentType: 'application/json',
-		data: JSON.stringify(user),
 		success: function(tripData) {
 			//console.log(input);
 			//showLogIn();
@@ -354,7 +304,7 @@ function handleLoginSubmission(){
 			contentType: 'application/json',
 			success: function(data) {
 				authToken = data.authToken;
-				updateNavigationBar(true);
+				updateNavigationBar(username, true);
 				//showTripsSection();
 				getTrips();
 			},
@@ -369,7 +319,7 @@ function handleUserHomeClick() {
 	$('.nav-container').on('click','.home-link', function(event) {
 		console.log("Home clicked");
 		event.preventDefault();
-		showTripsSection();
+		getTrips();
 	})
 }
 function handleUserLogOutClick() {
@@ -765,10 +715,10 @@ function showAddPlace(tripId) {
 	$('main').html(content);
 }
 
-function updateNavigationBar(isLoggedIn) {
+function updateNavigationBar(username, isLoggedIn) {
 	if(isLoggedIn) {
 		$('.nav-container').html(`
-			<span>Hi, user!</span>
+			<span>Hi, ${username}!</span>
 			<ul class="nav-links">
 				<li><a href="#" class="home-link">Home</a></li>
 				<li><a href="#" class="logout-link">Logout</a></li>
