@@ -23,7 +23,7 @@ router.get('/', jwtAuth, (req, res) => {
     User.findByUserName(req.user.username).populate({path: 'trips'}).then(function(user) {
       console.log(user.username);
       console.log(user.trips.length); 
-      res.json(user.trips.map(trip => trip.serialize()));
+      res.status(200).json(user.trips.map(trip => trip.serialize()));
     })
    
       .catch(err => {
@@ -153,7 +153,7 @@ router.put('/:id', jwtAuth, jsonParser, (req, res) => {
 // GET all places in a trip
 router.get('/:id/places', jwtAuth, (req, res) => {
   Trip.findById(req.params.id).populate({path: 'places'})
-  .then(trip => res.json(trip.places))
+  .then(trip => res.status(200).json(trip.places))
   .catch(err => {
     console.error(err);
     res.status(500).json({error: 'Internal Server Error'});
@@ -170,7 +170,7 @@ router.get('/:tripid/places/:placeid',jwtAuth, (req, res) => {
     console.log(req.params.tripid);
      console.log(typeof(req.params.tripid));
     if(place.trip.toString() === req.params.tripid) {
-      res.json(place)
+      res.status(200).json(place)
     } else{
       res.status(400).json("Trip does'nt contain the place");
     }
