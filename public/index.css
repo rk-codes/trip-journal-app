@@ -1,0 +1,63 @@
+*{
+	box-sizing: border-box;
+}
+header {
+	background-color: cyan;
+}
+.nav-container ul{
+	text-decoration: none;
+	text-align: right;
+}
+.nav-container li{
+	list-style: none;
+	display: inline-block;;
+}
+.nav-links a {
+	text-decoration: none;
+}
+.login-section {
+	margin: 0 auto;
+	text-align: center;
+}
+.trips-section {
+	max-width: 600px;
+ 	margin: 0 auto;
+}
+.tripname {
+	display: block;
+	color: grey;
+	font-style: italic;
+	font-size: 20px;
+	margin-bottom: 15px;
+}
+.trip-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.trip-list > li {
+	margin-bottom: 20px;
+	border: 1px solid grey;
+	padding: 20px;
+}
+.place-list > li {
+	margin-bottom: 20px;
+	border: 1px solid grey;
+	padding: 20px;
+}
+.place-item {
+	list-style: none;
+}
+.trip-info .dates{
+	display: inline;
+	color: grey;
+}
+.trip-info h3 {
+	display: inline;
+}
+.trip-description * {
+	vertical-align: middle;
+}
+.create-trip-button {
+	display: block;
+}
