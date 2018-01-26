@@ -4,12 +4,13 @@ let authToken;
 function tripToHtml(trip, isTripListDisplay=true){
 	//console.log(trip.id);
 	let html = "";
+	const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 	if(isTripListDisplay) {
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
-		<span>${formatDate(trip.startDate)}  to ${formatDate(trip.endDate)} </span>
+		<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)}  to ${new Date(trip.endDate).toLocaleDateString('en-US',options)} </span>
 		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
