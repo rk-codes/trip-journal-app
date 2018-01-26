@@ -497,6 +497,26 @@ function handleCancelAddTrip(){
 		getTrips();
 	})
 }
+
+function handleCancelAddPlace() {
+	$('main').on('click', '.cancel-add-place', function(event){
+		const tripId = $(this).data('trip');
+		getTrip(tripId);
+	})
+}
+function handleCancelEditPlace(){
+	$('main').on('click', '.cancel-edit-place', function(event){
+		const tripId = $(this).data('trip');
+		getTrip(tripId);
+	})
+}
+
+// Handler to navigate back to trips section
+function handleBackToTrips() {
+	$('main').on('click', '.back-button', function(event) {
+		getTrips();
+	})
+}
 // Show trip details form to edit
 function showTripDetailsToEdit(tripId) {
 	// console.log(trip.startDate.toLocaleDateString());
@@ -574,6 +594,7 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 					<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
 				</p>
 				<input type="submit" class="update-button js-update-button" value="Update">
+				<input type="button" data-trip="${tripId}" class="cancel-edit-place" value="Cancel">
 			 </fieldset>
 		</form>
 		`
@@ -585,12 +606,6 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 	})
 }
 
-// Handler to navigate back to trips section
-function handleBackToTrips() {
-	$('main').on('click', '.back-button', function(event) {
-		getTrips();
-	})
-}
 // Show sign up form
 function showSignUp() {
 	const content = `
@@ -709,6 +724,7 @@ function showAddPlace(tripId) {
 			<textarea id="place-desc" rows="9" cols="50"></textarea>
 		</p>
 		<input type="submit" class="add-button js-add-button" value="Add">
+		<input type="button" data-trip="${tripId}" class="cancel-add-place" value="Cancel">
 	</form>
 	`
 	$('main').html(content);
@@ -773,5 +789,7 @@ function init() {
 	handleUpdatePlace();
 	handleBackToTrips();
 	handleCancelAddTrip();
+	handleCancelAddPlace();
+	handleCancelEditPlace();
 }
 $(init());
