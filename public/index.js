@@ -325,7 +325,8 @@ function handleUserHomeClick() {
 function handleUserLogOutClick() {
 	$('.nav-container').on('click','.logout-link', function(event) {
 		console.log("Logoutclicked");
-		showLogIn();
+		updateNavigationBar(false);
+		showLandingPage();
 	})
 }
 //User clicks add new trip
@@ -420,15 +421,6 @@ function handleCreatePlaceInfo() {
 	})
 }
 
-// function addPlaceToTrip(trip, placeName, placeDesc) {
-// 	const newPlace = {
-// 		id: generateId(),
-// 		name: placeName,
-// 		description: placeDesc
-// 	}
-// 	trip.places.push(newPlace);
-
-// }
 // Handler to delete a place
 function handleDeletePlace() {
 	$('main').on('click','.delete-place-button', function(event) {
@@ -592,21 +584,21 @@ function handleBackToTrips() {
 function showSignUp() {
 	const content = `
 	<section class="signup-section">
-			<form class="signup-form">
-				<fieldset>
-					<legend>Sign Up</legend>
-					<label for="firstname">First name</label>
-					<input type="text" name="firstname" id="firstname"><br>
-					<label for="lastname">Last name</label>
-					<input type="text" name="lastname" id="lastname"><br>
-					<label for="username">Username</label>
-					<input type="text" name="username" id="username"><br>
-					<label for="password">Password</label>
-					<input type="password" name="password" id="password"><br>
-					<input type="submit" class="signup-button js-signup-button" value="Sign Up">
-				</fieldset>
-			</form>		
-		</section>
+		<h3>Sign Up</h3>
+		<form class="signup-form">
+			<fieldset>
+				<label for="firstname">First name</label>
+				<input type="text" name="firstname" id="firstname" placeholder="First name" required><br>
+				<label for="lastname">Last name</label>
+				<input type="text" name="lastname" id="lastname" placeholder="Last name" required><br>
+				<label for="username">Username</label>
+				<input type="text" name="username" id="username" placeholder="Username" required><br>
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password" placeholder="Password" required><br>
+				<input type="submit" class="signup-form-button js-signup-button" value="Sign Up">
+			</fieldset>
+		</form>		
+	</section>
 	`
 	$('main').html(content);
 }
@@ -615,18 +607,17 @@ function showLogIn() {
 	const content = `
 	<section class="login-section">
 		<h3>Login</h3>
-			<form class="login-form">
-				<fieldset>
-					<label for="username">Username</label>
-					<input type="text" name="username" id="login-username" placeholder="username" required><br>
-					<label for="password">Password</label>
-					<input type="password" name="password" id="login-password" placeholder="password" required><br>
-					<input type="submit" class="login-button js-login-button" value="Login">
-					<p>Not a registered user? <a href="#" class="signup-link">Sign Up</a>
-					<p class="demo">For Demo:<br>username: demouser<br>password: demopassword</p>
-				</fieldset>
-			</form>
-		</section>
+		<form class="login-form">
+			<fieldset>
+				<label for="username">Username</label>
+				<input type="text" name="username" id="login-username" placeholder="username" required><br>
+				<label for="password">Password</label>
+				<input type="password" name="password" id="login-password" placeholder="password" required><br>
+				<input type="submit" class="login-form-button js-login-button" value="Login">
+				<p class="demo">For Demo:<br>username: demouser<br>password: demopassword</p>
+			</fieldset>
+		</form>
+	</section>
 	`
 	$('main').html(content);
 
@@ -635,12 +626,12 @@ function showLogIn() {
 function showTripsSection(tripData) {
 	const content = `
 	<section class="trips-section">
-			<h2>My trips</h2>
-			<div class="trips-container">
+		<h2>My trips</h2>
+		<div class="trips-container">
 		
-			</div>
-			<button type="submit" class="add-trip-button">Add New Trip</button>
-		</section>
+		</div>
+		<button type="submit" class="add-trip-button">Add New Trip</button>
+	</section>
 	`
 	$('main').html(content);
 	console.log("***********************");
@@ -663,26 +654,25 @@ function showPlacesSection(place) {
 function showCreateTrip() {
 	const content = `
 	<section class="create-trip-section"> 
-			<form class="create-trip-form">
-				<fieldset>
-					<legend>Create Trip</legend>
-					<label for="tripname">Trip Name</label>
-					<input type="text" name="tripname" class="js-trip-name-entry"><br>
-					<label for="startdate">Start Date</label>
-					<input type="date" name="startdate" class="js-trip-start-entry"><br>
-					<label for="enddate">End Date</label>
-					<input type="date" name="enddate" class="js-trip-end-entry"><br>
-					<label for="country">Country</label>
-					<input type="text" name="country" class="js-trip-country-entry"><br>
-					<p class="trip-description">
-						<label for='trip-desc'>Trip Description</label>
-						<textarea id="trip-desc" rows="9" cols="50"></textarea>
-					</p>
-					<input type="submit" class="create-trip-button js-create-trip-button" value="Create Trip">
-				</fieldset>
-			</form>	
-		
-		</section>
+		<form class="create-trip-form">
+			<fieldset>
+				<legend>Add New Trip</legend>
+				<label for="tripname">Trip Name</label>
+				<input type="text" name="tripname" class="js-trip-name-entry"><br>
+				<label for="startdate">Start Date</label>
+				<input type="date" name="startdate" class="js-trip-start-entry"><br>
+				<label for="enddate">End Date</label>
+				<input type="date" name="enddate" class="js-trip-end-entry"><br>
+				<label for="country">Country</label>
+				<input type="text" name="country" class="js-trip-country-entry"><br>
+				<p class="trip-description">
+					<label for='trip-desc'>Trip Description</label>
+					<textarea id="trip-desc" rows="9" cols="50"></textarea>
+				</p>
+				<input type="submit" class="create-trip-button js-create-trip-button" value="Add Trip">
+			</fieldset>
+		</form>	
+	</section>
 	`
 	$('main').html(content);
 }
@@ -718,21 +708,42 @@ function showAddPlace(tripId) {
 }
 
 function updateNavigationBar(username, isLoggedIn) {
+	const content =`
+		<span>Hi, ${username}!</span>
+		<ul class="nav-links">
+			<li><a href="#" class="home-link">Home</a></li>
+			<li><a href="#" class="logout-link">Logout</a></li>
+		</ul>
+	`
 	if(isLoggedIn) {
+		$('.nav-container').html(content);
+	}
+	else{
 		$('.nav-container').html(`
-			<span>Hi, ${username}!</span>
-			<ul class="nav-links">
-				<li><a href="#" class="home-link">Home</a></li>
-				<li><a href="#" class="logout-link">Logout</a></li>
+			<ul>
+				<li><button class="login-button">Login</button></li>
+				<li><button class="signup-button">Sign Up</button></li>
 			</ul>
-		`);
+		`)
 	}
 }
 
-function generateId() {
-	return `${Math.random().toString(36).substring(2, 15)}${ Math.random().toString(36).substring(2, 15)}`
+function showLandingPage() {
+	const content = `
+	<div class="intro-section row">
+			<p>
+			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+			when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into 
+			electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+			and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+			</p>
+			<button class="start-button">Get started</button>
+		</div>	
+	`
+	$('main').html(content);
 }
 function init() {
+	showLandingPage();
 	handleHomeSignUp();
 	handleHomeLogin();
 	handleSignUpSubmission();
