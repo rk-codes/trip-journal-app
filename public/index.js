@@ -9,7 +9,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
-		<span>Start: ${formatDate(trip.startDate)}  End: ${formatDate(trip.endDate)} </span>
+		<span>${formatDate(trip.startDate)}  to ${formatDate(trip.endDate)} </span>
 		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
@@ -21,7 +21,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 		html = `
 			<div class="trip-info">
 				<h3>${trip.name}</h3>
-				<span class="dates">Start: ${formatDate(trip.startDate)} End: ${formatDate(trip.endDate)}</span>
+				<span class="dates">${formatDate(trip.startDate)} to ${formatDate(trip.endDate)}</span>
 				<p>${trip.description}</h2>
 				${placesToHtml(trip)}
 			</div>
@@ -486,6 +486,11 @@ function formatDate(date) {
     return `${year}-${month}-${day}`
 }
 
+function handleCancelAddTrip(){
+	$('main').on('click', '.cancel-add-trip', function(event){
+		getTrips();
+	})
+}
 // Show trip details form to edit
 function showTripDetailsToEdit(tripId) {
 	// console.log(trip.startDate.toLocaleDateString());
@@ -627,7 +632,7 @@ function showTripsSection(tripData) {
 	const content = `
 	<section class="trips-section">
 		<h2>My trips</h2>
-		<div class="trips-container">
+		<div class="trips-container ">
 		
 		</div>
 		<button type="submit" class="add-trip-button">Add New Trip</button>
@@ -653,10 +658,10 @@ function showPlacesSection(place) {
 // Show form to enter trip details
 function showCreateTrip() {
 	const content = `
-	<section class="create-trip-section"> 
+	<section class="create-trip-section">
+		<h3>Add New Trip</h3> 
 		<form class="create-trip-form">
 			<fieldset>
-				<legend>Add New Trip</legend>
 				<label for="tripname">Trip Name</label>
 				<input type="text" name="tripname" class="js-trip-name-entry"><br>
 				<label for="startdate">Start Date</label>
@@ -670,6 +675,7 @@ function showCreateTrip() {
 					<textarea id="trip-desc" rows="9" cols="50"></textarea>
 				</p>
 				<input type="submit" class="create-trip-button js-create-trip-button" value="Add Trip">
+				<input type="button" class="cancel-add-trip" value="Cancel">
 			</fieldset>
 		</form>	
 	</section>
@@ -709,11 +715,14 @@ function showAddPlace(tripId) {
 
 function updateNavigationBar(username, isLoggedIn) {
 	const content =`
-		<span>Hi, ${username}!</span>
-		<ul class="nav-links">
-			<li><a href="#" class="home-link">Home</a></li>
-			<li><a href="#" class="logout-link">Logout</a></li>
-		</ul>
+		<div class="user-box">
+			<span>Hi, ${username}!</span>
+			<ul class="nav-links">
+				<li><a href="#" class="home-link">Home</a></li>
+				<li><a href="#" class="logout-link">Logout</a></li>
+			</ul>
+		</div>
+		
 	`
 	if(isLoggedIn) {
 		$('.nav-container').html(content);
@@ -762,5 +771,6 @@ function init() {
 	handleEditPlace();
 	handleUpdatePlace();
 	handleBackToTrips();
+	handleCancelAddTrip();
 }
 $(init());
