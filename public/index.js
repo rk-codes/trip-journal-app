@@ -243,7 +243,7 @@ function updatePlace(tripId, place) {
 
 //User clicks login on home page
 function handleHomeLogin(){
-	$('.login-link').on('click', function(event) {
+	$('.login-button').on('click', function(event) {
 	 	console.log('Login clicked');
 	 	event.preventDefault();
 	 	showLogIn();
@@ -252,7 +252,7 @@ function handleHomeLogin(){
 
 //User clicks sign up on home page
 function handleHomeSignUp() {
-	$('.signup-link').on('click', function(event) {
+	$('.signup-button').on('click', function(event) {
 		console.log('Sign Up clicked');
 		event.preventDefault();
 		showSignUp();	
@@ -618,10 +618,12 @@ function showLogIn() {
 			<form class="login-form">
 				<fieldset>
 					<label for="username">Username</label>
-					<input type="text" name="username" id="login-username"><br>
+					<input type="text" name="username" id="login-username" placeholder="username" required><br>
 					<label for="password">Password</label>
-					<input type="password" name="password" id="login-password"><br>
+					<input type="password" name="password" id="login-password" placeholder="password" required><br>
 					<input type="submit" class="login-button js-login-button" value="Login">
+					<p>Not a registered user? <a href="#" class="signup-link">Sign Up</a>
+					<p class="demo">For Demo:<br>username: demouser<br>password: demopassword</p>
 				</fieldset>
 			</form>
 		</section>
