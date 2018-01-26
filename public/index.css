@@ -1,27 +1,79 @@
 *{
 	box-sizing: border-box;
+	font-size: 100%;
+}
+body{
+	font-size: 18px;
 }
 header {
 	background-color: cyan;
 }
+h1{
+	border: 1px solid yellow; /*remove later*/
+	font-size: 1.5em;
+}
+.nav-container{
+	border: 1px solid red; /*remove later*/
+}
 .nav-container ul{
 	text-decoration: none;
-	text-align: right;
+	text-align: center;
 }
 .nav-container li{
 	list-style: none;
 	display: inline-block;;
 }
-.nav-links a {
-	text-decoration: none;
+.login-button, .signup-button{
+	margin-left: 10px;
 }
-.login-section {
+.intro-section {
+	border: 1px solid grey; /*remove later*/
+	text-align: center;
+	position: absolute;
+	top: 35%;
+	left: 0;
+	right: 0;
+}
+.login-section, .signup-section{
 	margin: 0 auto;
+	width: 40%;
+}
+.login-form{
+	text-align: left;
+}
+.login-form-button, .signup-form-button{
+	margin-top: 8px;
+}
+.home-link, .logout-link{
+	margin: 15px;
+}
+.user-box{
+	margin-top: 10px;
+}
+.user-box span{
 	text-align: center;
 }
-.trips-section {
+input {
+	margin-top: 8px;
+	margin-bottom: 8px;
+	padding-left: 5px;
+	
+}
+label{
+	display: block;
+}
+.trips-section, .trip-info {
 	max-width: 600px;
  	margin: 0 auto;
+}
+.trip-info{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 1px solid red;
+}
+.trip-date{
+	text-align: right;
 }
 .tripname {
 	display: block;
@@ -39,6 +91,14 @@ header {
 	margin-bottom: 20px;
 	border: 1px solid grey;
 	padding: 20px;
+}
+.create-trip-section{
+	margin: 0 auto;
+	max-width: 600px;
+}
+.places-container{
+	border: 1px solid grey;
+	padding: 10px;
 }
 .place-list > li {
 	margin-bottom: 20px;
