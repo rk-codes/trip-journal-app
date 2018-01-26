@@ -21,10 +21,16 @@ function tripToHtml(trip, isTripListDisplay=true){
 		html = `
 			<div class="trip-info">
 				<h3>${trip.name}</h3>
-				<span class="dates">${formatDate(trip.startDate)} to ${formatDate(trip.endDate)}</span>
+				<div class="trip-date">
+					<span>${formatDate(trip.startDate)} to ${formatDate(trip.endDate)}</span>
+				</div>
 				<p>${trip.description}</h2>
-				${placesToHtml(trip)}
 			</div>
+				<div class="places-container"
+					${placesToHtml(trip)}
+				</div>
+				<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
+				<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
 		`
 
 	}
@@ -686,16 +692,11 @@ function showCreateTrip() {
 function showTripDetails(trip) {
 	const content = `	
 		<section class="trip-details">
-			<div class="trip-info">
-			</div>
-			<div class="trip-places-list">
-			</div>
-			<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
-			<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
+			
 		</section>
 	`
 	$('main').html(content);
-	$('.trip-places-list').html(tripToHtml(trip, false));	
+	$('.trip-details').html(tripToHtml(trip, false));	
 	//$('.trip-info').html(tripToHtml(trip));
 }
 function showAddPlace(tripId) {
