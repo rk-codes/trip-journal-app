@@ -300,7 +300,7 @@ function handleLoginSubmission(){
 		let userInfo = {username, password}
 		$.ajax({
 			method: 'POST',
-			url: `/user/auth/login`,
+			url: `/auth/login`,
 			data: JSON.stringify(userInfo),
 			contentType: 'application/json',
 			success: function(data) {
