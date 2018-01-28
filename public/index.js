@@ -749,8 +749,8 @@ function updateNavigationBar(username, isLoggedIn) {
 	else{
 		$('.nav-container').html(`
 			<ul>
-				<li><button class="login-button">Login</button></li>
-				<li><button class="signup-button">Sign Up</button></li>
+				<li><input type="button" class="login-button" value="Login"></li>
+				<li><input type="button" class="signup-button" value="Sign Up"></li>
 			</ul>
 		`)
 	}
