@@ -250,7 +250,7 @@ function updatePlace(tripId, place) {
 
 //User clicks login on home page
 function handleHomeLogin(){
-	$('.login-button').on('click', function(event) {
+	$('.nav-container').on('click','.login-button', function(event) {
 	 	console.log('Login clicked');
 	 	event.preventDefault();
 	 	showLogIn();
@@ -259,7 +259,7 @@ function handleHomeLogin(){
 
 //User clicks sign up on home page
 function handleHomeSignUp() {
-	$('.signup-button').on('click', function(event) {
+	$('.nav-container').on('click','.signup-button', function(event) {
 		console.log('Sign Up clicked');
 		event.preventDefault();
 		showSignUp();	
