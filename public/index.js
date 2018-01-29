@@ -248,6 +248,13 @@ function updatePlace(tripId, place) {
 	})
 }
 
+// User clicks get started button on home page
+function handleGetStarted() {
+	$('main').on('click', '.start-button', function(event) {
+		showLogIn();
+	})
+}
+
 //User clicks login on home page
 function handleHomeLogin(){
 	$('.nav-container').on('click','.login-button', function(event) {
@@ -771,6 +778,7 @@ function showLandingPage() {
 	`
 	$('main').html(content);
 }
+
 function init() {
 	showLandingPage();
 	handleHomeSignUp();
@@ -794,5 +802,6 @@ function init() {
 	handleCancelAddTrip();
 	handleCancelAddPlace();
 	handleCancelEditPlace();
+	handleGetStarted();
 }
 $(init());
