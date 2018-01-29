@@ -33,12 +33,13 @@ nav{
 	align-self: center;
 }
 .login-button, .signup-button{
-	margin-left: 10px;
+	margin-left: 15px;
+	margin-right: 15px;
 	padding: 10px;
 	border-radius: 6px;
 	border: 0;
-	background-color: darkorange;
-	color: cyan;
+	background-color: #50959c;
+	color: #f7d758;
 }
 .intro-section {
 	border: 1px solid grey; /*remove later*/
@@ -48,6 +49,11 @@ nav{
 	left: 0;
 	right: 0;
 	
+}
+.start-button {
+	border-radius: 10px;
+	background-color: #f1d7738a;
+	padding: 10px;
 }
 .login-section, .signup-section{
 	max-width: 500px;
@@ -98,7 +104,7 @@ nav{
 .edit-trip-box{
 	display: flex;
 }
-.edit-trip-form {
+.edit-trip-form, .edit-place-form, .create-trip-form, .add-place-form{
 	/*max-width: 500px;*/
     padding: 10px 20px;
     background: #f4f7f8;
@@ -127,14 +133,16 @@ label{
 .trips-section, .trip-info {
 	max-width: 600px;
  	margin: 0 auto;
+ 	opacity: 0.9;
 }
 .trip-info{
-	margin-top: 40px;
+	margin-top: 1px;
 	margin-bottom: 20px;
 	padding: 10px;
 	/*background-image: url(https://www.xmple.com/wallpaper/white-gradient-linear-blue-1920x1080-c2-5f9ea0-f8f8ff-a-0-f-14.svg);*/
-	background-image: url(https://www.xmple.com/wallpaper/linear-blue-gradient-cyan-2732x2048-c2-72ae9f-add8e6-a-0-f-14.svg);
+	/*background-image: url(https://www.xmple.com/wallpaper/linear-blue-gradient-cyan-2732x2048-c2-72ae9f-add8e6-a-0-f-14.svg);*/
 	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
+	background-color: white;
 	/*color: white;*/
 	/*border: 1px solid red;*/
 }
