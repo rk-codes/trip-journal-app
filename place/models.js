@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const PlaceSchema = mongoose.Schema({
 	name: String,
 	description: String,
+	date: {
+		type: Date,
+		default: Date.now()
+	},
 	trip: {type: mongoose.Schema.Types.ObjectId , ref: "Trip"}
 
 });

@@ -54,11 +54,13 @@ function tripsToHtml(trips) {
 }
 function placeToHtml(place, trip, isPlaceListDisplay=true) {
 	let html = "";
+	const options = {year: 'numeric', month: 'short', day: 'numeric'};
 	if(isPlaceListDisplay) {
 	html = `
 	<li class="place-item">
 		<h4 class="placename">${place.name}</h4>
 		<p class-"place-desc">${place.description}</p>
+		<p class="place-date">${new Date(place.date).toLocaleDateString('en-US',options)}</p>
 		<input type="button" value="Edit" class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}">
 		<input type="button" value="Delete" class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}">
 	</li>
@@ -680,6 +682,7 @@ function showPlacesSection(place) {
 	<li class="place-item">
 		<h4 class="placename">${place.name}</h4>
 		<p class-"place-desc">${place.description}</p>
+		<p class="place-date">${place.date}</p>
 		<input type="button" value="Edit" class="edit-place-button" data-id="${place.id}" data-trip="${trip.id}">
 		<input type="button" value="Delete" class="delete-place-button" data-id="${place.id}" data-trip="${trip.id}">
 	</li>
@@ -729,6 +732,8 @@ function showAddPlace(tripId) {
 	<form  data-id="${tripId}" class="add-place-form">
 		<label for="placename">Place Name</label>
 		<input type="text" name="placename" class="js-place-name-entry"><br>
+		<label for="date">Date Visited</label>
+		<input type="date" name="date" class="js-trip-start-entry"><br>			
 		<p class="place-description">
 			<label for='place-desc'>Description</label>
 			<textarea id="place-desc" rows="9" cols="50"></textarea>
