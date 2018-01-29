@@ -4,27 +4,41 @@
 }
 body{
 	font-size: 18px;
+	margin: 0 auto;
+	height: 100%;
+	background-image: url(https://static.guideadvisor.com/wp-content/uploads/thumb-cache/shutterstock_91028072-3e46b96aa4275596a5bb6c403b7cec12-840x554-85-nocrop.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
 }
-header {
-	background-color: cyan;
+
+.header-container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: white;
 }
-h1{
-	border: 1px solid yellow; /*remove later*/
-	font-size: 1.5em;
+.logo{
+	margin-left: 5%;
+	font-size: 2em;
+	/*color: orange;*/
 }
-.nav-container{
-	border: 1px solid red; /*remove later*/
-}
-.nav-container ul{
-	text-decoration: none;
-	text-align: center;
-}
-.nav-container li{
+header ul li {
+	display: inline-block;
 	list-style: none;
-	display: inline-block;;
+	margin: 10px;
+	font-size: 0.9em;
+}
+nav{
+	align-self: center;
 }
 .login-button, .signup-button{
 	margin-left: 10px;
+	padding: 10px;
+	border-radius: 6px;
+	border: 0;
+	background-color: darkorange;
+	color: cyan;
 }
 .intro-section {
 	border: 1px solid grey; /*remove later*/
@@ -33,16 +47,64 @@ h1{
 	top: 35%;
 	left: 0;
 	right: 0;
+	
 }
 .login-section, .signup-section{
-	margin: 0 auto;
-	width: 40%;
+	max-width: 500px;
+    padding: 10px 20px;
+    background: #f4f7f8;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
 }
-.login-form{
-	text-align: left;
+.signup-section fieldset,
+.login-section fieldset,
+.edit-trip-form fieldset{
+	border: none;
+}
+
+.signup-section h3,
+.login-section h3{
+    /*background: #4D4D4D;*/
+    text-transform: uppercase;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #797979;
+    font-size: 18px;
+    font-weight: 100;
+    padding: 20px;
+    margin: -30px -30px 30px -30px;
+}
+.signup-section input[type="text"],
+.signup-section input[type="password"],
+.login-section input[type="text"],
+.login-section input[type="password"] {
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font: 16px Arial, Helvetica, sans-serif;
+    height: 35px;
 }
 .login-form-button, .signup-form-button{
-	margin-top: 8px;
+	box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 14px;
+    padding: 8px 18px;
+    text-transform: uppercase;
+}
+.edit-trip-box{
+	display: flex;
+}
+.edit-trip-form {
+	/*max-width: 500px;*/
+    padding: 10px 20px;
+    background: #f4f7f8;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
 }
 .home-link, .logout-link{
 	margin: 15px;
@@ -67,10 +129,14 @@ label{
  	margin: 0 auto;
 }
 .trip-info{
-	margin-top: 20px;
+	margin-top: 40px;
 	margin-bottom: 20px;
 	padding: 10px;
-	border: 1px solid red;
+	/*background-image: url(https://www.xmple.com/wallpaper/white-gradient-linear-blue-1920x1080-c2-5f9ea0-f8f8ff-a-0-f-14.svg);*/
+	background-image: url(https://www.xmple.com/wallpaper/linear-blue-gradient-cyan-2732x2048-c2-72ae9f-add8e6-a-0-f-14.svg);
+	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
+	/*color: white;*/
+	/*border: 1px solid red;*/
 }
 .trip-date{
 	text-align: right;
@@ -79,7 +145,8 @@ label{
 	display: block;
 	color: grey;
 	font-style: italic;
-	font-size: 20px;
+	font-size: 1.4em;
+	font-weight: bold;
 	margin-bottom: 15px;
 }
 .trip-list {
@@ -87,11 +154,6 @@ label{
   padding-left: 0;
 }
 
-.trip-list > li {
-	margin-bottom: 20px;
-	border: 1px solid grey;
-	padding: 20px;
-}
 .create-trip-section{
 	margin: 0 auto;
 	max-width: 600px;
@@ -120,4 +182,40 @@ label{
 }
 .create-trip-button {
 	display: block;
+}
+
+.trips-section{
+
+}
+.trips-container{
+	/*border: 1px solid yellow;*/
+	/*background-color: white;*/
+}
+.trip-item {
+	/*box-shadow: 2px 8px 5px -3px rgba(0,0,0,0.54);*/
+	/*background-image: url(https://img00.deviantart.net/f58c/i/2008/067/5/b/paper_texture_2_by_wojtar_stock.jpg);*/
+	/*background-image: url(http://www.maasbach.com/wp-content/uploads/paper-background.jpg);*/
+	background-image: url(https://vignette.wikia.nocookie.net/coc-revamp-mod/images/5/50/Wiki-background/revision/latest/scale-to-width-down/610?cb=20151012091231);
+	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
+	margin-bottom: 20px;
+	border: 1px solid grey;
+	padding: 20px;
+}
+.trip-details{
+	
+}
+/* Media query*/
+@media screen and (max-width : 600px) {
+	.header-container {
+		flex-direction: column;
+		justify-content: space-between;
+    }
+    nav {
+    	/*align-self: center;*/
+		margin: 1.5em 0 0 5%;
+    }
+    header ul li{
+    	display: inline-block;
+    }
+
 }
