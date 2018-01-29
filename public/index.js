@@ -4,13 +4,13 @@ let authToken;
 function tripToHtml(trip, isTripListDisplay=true){
 	//console.log(trip.id);
 	let html = "";
-	const options = {year: 'numeric', month: 'long', day: 'numeric'};
+	const options = {year: 'numeric', month: 'short', day: 'numeric'};
 
 	if(isTripListDisplay) {
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
-		<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)}  to ${new Date(trip.endDate).toLocaleDateString('en-US',options)} </span>
+		<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)}  - ${new Date(trip.endDate).toLocaleDateString('en-US',options)} </span>
 		<p class-"trip-country">${trip.country}</p>
 		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
 		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
@@ -23,11 +23,11 @@ function tripToHtml(trip, isTripListDisplay=true){
 			<div class="trip-info">
 				<h3>${trip.name}</h3>
 				<div class="trip-date">
-					<span>${formatDate(trip.startDate)} to ${formatDate(trip.endDate)}</span>
+					<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)} - ${new Date(trip.endDate).toLocaleDateString('en-US',options)}</span>
 				</div>
 				<p>${trip.description}</h2>
 			</div>
-				<div class="places-container"
+				<div class="places-container row"
 					${placesToHtml(trip)}
 				</div>
 				<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
@@ -544,6 +544,7 @@ function showTripDetailsToEdit(tripId) {
 			const startDate = formatDate(trip.startDate);
 			const endDate = formatDate(trip.endDate);
 			const content = `
+			<div class="edit-trip-box ">
 		<form class="edit-trip-form" data-id="${trip._id}">
 			<fieldset>
 				<legend>Edit Trip</legend>
@@ -562,6 +563,7 @@ function showTripDetailsToEdit(tripId) {
 				<input type="submit" class="update-trip-button" value="Update">
 			</fieldset>
 		</form>	
+		</div>
 		`
 		$('main').html(content);
 
