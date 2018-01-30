@@ -12,8 +12,10 @@ function tripToHtml(trip, isTripListDisplay=true){
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
 		<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)}  - ${new Date(trip.endDate).toLocaleDateString('en-US',options)} </span>
 		<p class-"trip-country">${trip.country}</p>
-		<input type="button" value="Edit" class="edit-trip-button" data-id="${trip.id}">
-		<input type="button" value="Delete" class="delete-trip-button" data-id="${trip.id}">
+		
+		<button class="edit-trip-button" data-id="${trip.id}"><i class="fa fa-edit fa-lg"></i></button>
+		<button class="delete-trip-button" data-id="${trip.id}"><i class="fa fa-trash fa-lg"></i></button>
+		
 	</li>
 	`
 	}
@@ -679,13 +681,16 @@ function showLogIn() {
 // Show list of trips
 function showTripsSection(tripData) {
 	const content = `
-	<section class="trips-section">
+	<div class="outer">
+		<section class="trips-section">
 		<h2>My trips</h2>
 		<div class="trips-container ">
 		
 		</div>
 		<button type="submit" class="add-trip-button">Add New Trip</button>
 	</section>
+	</div>
+	
 	`
 	$('main').html(content);
 	console.log("***********************");
