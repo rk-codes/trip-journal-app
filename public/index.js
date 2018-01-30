@@ -30,8 +30,11 @@ function tripToHtml(trip, isTripListDisplay=true){
 				<div class="places-container row"
 					${placesToHtml(trip)}
 				</div>
-				<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
-				<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
+				<div class="places-buttons-box">
+					<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
+					<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
+				</div>
+				
 		`
 
 	}
@@ -58,11 +61,16 @@ function placeToHtml(place, trip, isPlaceListDisplay=true) {
 	if(isPlaceListDisplay) {
 	html = `
 	<li class="place-item">
-		<h4 class="placename">${place.name}</h4>
-		<p class-"place-desc">${place.description}</p>
-		<p class="place-date">${new Date(place.date).toLocaleDateString('en-US',options)}</p>
-		<input type="button" value="Edit" class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}">
-		<input type="button" value="Delete" class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}">
+		<div class="place-date-box col-2">
+			<span class="place-date">${new Date(place.date).toLocaleDateString('en-US',options)}</span>
+		</div>
+		<div class="place-details-box col-10">
+			<span class="placename">${place.name}</span>
+			<p class-"place-desc">${place.description}</p>
+			<input type="button" value="Edit" class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}">
+			<input type="button" value="Delete" class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}">
+		</div>
+		
 	</li>
 	`
 	}
@@ -514,6 +522,11 @@ function handleCancelAddPlace() {
 		getTrip(tripId);
 	})
 }
+function handleCancelEditTrip() {
+	$('main').on('click', '.cancel-edit-trip', function(event) {
+		getTrips();
+	})
+}
 function handleCancelEditPlace(){
 	$('main').on('click', '.cancel-edit-place', function(event){
 		const tripId = $(this).data('trip');
@@ -570,6 +583,7 @@ function showTripDetailsToEdit(tripId) {
 					<textarea id="trip-desc" rows="9" cols="50" class="description">${trip.description}</textarea>
 				</p>
 				<input type="submit" class="update-trip-button" value="Update">
+				<input type="button" class="cancel-edit-trip" value="Cancel">
 			</fieldset>
 		</form>	
 		</div>
@@ -596,19 +610,21 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 		contentType: 'application/json',
 		success: function(place) {
 			const content = `
-		<form  data-id="${placeId}" data-trip="${tripId}" class="edit-place-form">
-			<fieldset>
-				<legend>Edit Place</legend>
-				<label for="placename">Place Name</label>
-				<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
-				<p class="place-description">
-					<label for='place-desc'>Description</label>
-					<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
-				</p>
-				<input type="submit" class="update-button js-update-button" value="Update">
-				<input type="button" data-trip="${tripId}" class="cancel-edit-place" value="Cancel">
-			 </fieldset>
-		</form>
+			<div class="edit-place-box">
+				<form  data-id="${placeId}" data-trip="${tripId}" class="edit-place-form">
+					<fieldset>
+						<legend>Edit Place</legend>
+						<label for="placename">Place Name</label>
+						<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
+						<p class="place-description">
+							<label for='place-desc'>Description</label>
+							<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
+						</p>
+						<input type="submit" class="update-button js-update-button" value="Update">
+						<input type="button" data-trip="${tripId}" class="cancel-edit-place" value="Cancel">
+			 		</fieldset>
+				</form>
+			</div>
 		`
 		$('main').html(content);
 		},
@@ -692,10 +708,10 @@ function showPlacesSection(place) {
 // Show form to enter trip details
 function showCreateTrip() {
 	const content = `
-	<section class="create-trip-section">
-		<h3>Add New Trip</h3> 
+	<div class="create-trip-box">
 		<form class="create-trip-form">
 			<fieldset>
+			<legend>Add New Trip</legend>
 				<label for="tripname">Trip Name</label>
 				<input type="text" name="tripname" class="js-trip-name-entry"><br>
 				<label for="startdate">Start Date</label>
@@ -712,7 +728,7 @@ function showCreateTrip() {
 				<input type="button" class="cancel-add-trip" value="Cancel">
 			</fieldset>
 		</form>	
-	</section>
+	</div>
 	`
 	$('main').html(content);
 }
@@ -729,18 +745,20 @@ function showTripDetails(trip) {
 }
 function showAddPlace(tripId) {
 	const content = `
-	<form  data-id="${tripId}" class="add-place-form">
-		<label for="placename">Place Name</label>
-		<input type="text" name="placename" class="js-place-name-entry"><br>
-		<label for="date">Date Visited</label>
-		<input type="date" name="date" class="js-trip-start-entry"><br>			
-		<p class="place-description">
-			<label for='place-desc'>Description</label>
-			<textarea id="place-desc" rows="9" cols="50"></textarea>
-		</p>
-		<input type="submit" class="add-button js-add-button" value="Add">
-		<input type="button" data-trip="${tripId}" class="cancel-add-place" value="Cancel">
-	</form>
+	<div class="add-place-box">
+		<form  data-id="${tripId}" class="add-place-form">
+			<label for="placename">Place Name</label>
+			<input type="text" name="placename" class="js-place-name-entry"><br>
+			<label for="date">Date Visited</label>
+			<input type="date" name="date" class="js-trip-start-entry"><br>			
+			<p class="place-description">
+				<label for='place-desc'>Description</label>
+				<textarea id="place-desc" rows="9" cols="50"></textarea>
+			</p>
+			<input type="submit" class="add-place-button js-add-button" value="Add">
+			<input type="button" data-trip="${tripId}" class="cancel-add-place" value="Cancel">
+		</form>
+	</div>
 	`
 	$('main').html(content);
 }
@@ -805,6 +823,7 @@ function init() {
 	handleUpdatePlace();
 	handleBackToTrips();
 	handleCancelAddTrip();
+	handleCancelEditTrip();
 	handleCancelAddPlace();
 	handleCancelEditPlace();
 	handleGetStarted();

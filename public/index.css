@@ -65,11 +65,17 @@ nav{
     border-radius: 8px;
 }
 .signup-section fieldset,
-.login-section fieldset,
-.edit-trip-form fieldset{
+.login-section fieldset{
 	border: none;
 }
-
+fieldset legend {
+    background: #e8e5d6;
+    color: #058088;
+    padding: 5px 10px ;
+    border-radius: 5px;
+    box-shadow: 0 0 0 2px #98920a5c;
+    margin-left: 20px;
+}
 .signup-section h3,
 .login-section h3{
     /*background: #4D4D4D;*/
@@ -81,12 +87,17 @@ nav{
     padding: 20px;
     margin: -30px -30px 30px -30px;
 }
+input[type="text"],
+input[type="password"] {
+	 width: 100%;
+}
 .signup-section input[type="text"],
 .signup-section input[type="password"],
 .login-section input[type="text"],
 .login-section input[type="password"] {
-    width: 100%;
+   
     padding: 7px;
+    margin-top: 8px;
     border: none;
     border-bottom: 1px solid #ddd;
     font: 16px Arial, Helvetica, sans-serif;
@@ -102,9 +113,7 @@ nav{
     padding: 8px 18px;
     text-transform: uppercase;
 }
-.edit-trip-box{
-	display: flex;
-}
+
 .edit-trip-form, .edit-place-form, .create-trip-form, .add-place-form{
 	/*max-width: 500px;*/
     padding: 10px 20px;
@@ -112,6 +121,9 @@ nav{
     margin: 40px auto;
     padding: 20px;
     border-radius: 8px;
+}
+.create-trip-form, .edit-trip-form, .create-trip-form, .add-place-form{
+	background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg);
 }
 .home-link, .logout-link{
 	margin: 15px;
@@ -123,13 +135,14 @@ nav{
 	text-align: center;
 }
 input {
-	margin-top: 8px;
+	margin-top: 4px;
 	margin-bottom: 8px;
 	padding-left: 5px;
 	
 }
 label{
 	display: block;
+	margin-top: 8px;
 }
 .trips-section, .trip-info {
 	max-width: 600px;
@@ -144,6 +157,7 @@ label{
 	/*background-image: url(https://www.xmple.com/wallpaper/linear-blue-gradient-cyan-2732x2048-c2-72ae9f-add8e6-a-0-f-14.svg);*/
 	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
 	background-color: white;
+
 	/*color: white;*/
 	/*border: 1px solid red;*/
 }
@@ -163,19 +177,19 @@ label{
   padding-left: 0;
 }
 
-.create-trip-section{
+/*.create-trip-section{
 	margin: 0 auto;
 	max-width: 600px;
-}
+}*/
 .places-container{
 	border: 1px solid grey;
 	padding: 10px;
 }
-.place-list > li {
+/*.place-list > li {
 	margin-bottom: 20px;
 	border: 1px solid grey;
 	padding: 20px;
-}
+}*/
 .place-item {
 	list-style: none;
 }
@@ -213,13 +227,59 @@ label{
 .trip-details{
 	
 }
+.places-container{
+	/*display: flex;
+	flex-direction: column;
+	margin-left: 10%;
+	margin-right: 10%;*/
+	background-color: white;
+	
+}
+.place-item{
+	/*display: flex;
+	flex-direction: row;*/
+}
+.place-date-box {
+	background-color: white;
+	color: orange;
+	border: 1px solid blue;
+	font-size: 1.1em;
+	/*margin: 3%;
+	padding: 5px;*/
+}
+.place-details-box {
+	margin-bottom: 10px;
+	border: 1px solid grey;
+}
+.places-buttons-box {
+	margin-left: 10%;
+}
+.add-place-box, .edit-place-box, .create-trip-box, .edit-trip-box{
+	display: flex;
+}
+textarea{
+	box-sizing: border-box;
+}
+.create-trip-button{
+	display: inline-block;
+	margin-right: 15px;
+}
+.create-trip-button, .cancel-add-trip, .add-place-button, .cancel-add-place, .update-trip-button {
+	background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 0.9em;
+    padding: 8px 18px;
+}
+
 /* Media query*/
 @media screen and (max-width : 600px) {
 	.header-container {
 		flex-direction: column;
 		justify-content: space-between;
     }
-    nav {
+    .nav-container  {
     	/*align-self: center;*/
 		margin: 1.5em 0 0 5%;
     }
