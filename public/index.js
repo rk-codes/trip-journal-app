@@ -25,13 +25,16 @@ function tripToHtml(trip, isTripListDisplay=true){
 		//console.log(trip.places);
 		html = `
 			<div class="trip-info">
+			<div class="box">
 				<h3>${trip.name}</h3>
 				<div class="trip-date">
 					<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)} - ${new Date(trip.endDate).toLocaleDateString('en-US',options)}</span>
 				</div>
 				<p>${trip.description}</h2>
 			</div>
-				<div class="places-container"
+			</div>
+			<div class="box-one">
+				<div class="places-container">
 				<ul>
 					${placesToHtml(trip)}
 				</ul>
@@ -40,6 +43,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 					<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
 					<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
 				</div>
+			</div>
 				
 		`
 
@@ -468,17 +472,6 @@ function handleDeletePlace() {
 		console.log("Delete clicked");
 		const placeId = $(this).data('id');
 		const tripId = $(this).data('trip');
-		// const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		// const place = trip.places.find(function(place) {return place.id === placeId});
-		// const index = trip.places.indexOf(place);
-		// console.log(`TripId: ${tripId} PlaceId: ${placeId} TripPlace: ${trip.places[0].id} Place: ${place}, Index: ${index}`);
-		// console.log(placeId);
-		// console.log(tripId);
-		// console.log(trip.places[0].id);
-		// if(index >= 0) {
-		// 	trip.places.splice(index, 1);
-		// }
-		// showTripDetails(trip);
 		deletePlace(tripId, placeId);
 	})
 } 
@@ -490,8 +483,6 @@ function handleEditPlace() {
 		console.log("Edit clicked");
 		const placeId = $(this).data('id');
 		const tripId = $(this).data('trip');
-		//const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		//const place = trip.places.find(function(place) {return place.id === placeId});
 		showPlaceDetailsToEdit(tripId, placeId);
 	})
 }
@@ -503,16 +494,11 @@ function handleUpdatePlace() {
 		console.log("Update clicked");
 		const placeId = $(this).data('id');
 		const tripId = $(this).data('trip');
-		//const trip = user.trips.find(function(trip) {return trip.id === tripId});
-		//const place = trip.places.find(function(place) {return place.id === placeId});
 		const toUpdateData = {
 			id: placeId,
 			name: $('.place-name-entry').val(),
 			description: $('#place-desc').val()
 		}
-		//place.name = $('.place-name-entry').val();
-		//place.description = $('#place-desc').val();
-		//showTripDetails(trip);
 		updatePlace(tripId, toUpdateData);
 	})
 }
@@ -559,17 +545,6 @@ function handleBackToTrips() {
 }
 // Show trip details form to edit
 function showTripDetailsToEdit(tripId) {
-	// console.log(trip.startDate.toLocaleDateString());
-	// console.log(trip.endDate.toLocaleDateString());
-	// let start = trip.startDate;
-	// let sday = ("0" + start.getDate()).slice(-2);
-	// let smonth = ("0" + (start.getMonth() + 1)).slice(-2);
-	// let startDate = start.getFullYear()+"-"+(smonth)+"-"+(sday);
-	// let end = trip.endDate;
-	// let eday = ("0" + end.getDate()).slice(-2);
-	// let emonth = ("0" + (end.getMonth() + 1)).slice(-2);
-	// let endDate = end.getFullYear()+"-"+(emonth)+"-"+(eday);	
-
 	$.ajax({
 
 		method: 'GET',
@@ -773,6 +748,8 @@ function showAddPlace(tripId) {
 	const content = `
 	<div class="add-place-box">
 		<form  data-id="${tripId}" class="add-place-form">
+			<fieldset>
+			<legend>Add Place</legend>
 			<label for="placename">Place Name</label>
 			<input type="text" name="placename" class="js-place-name-entry"><br>
 			<label for="date">Date Visited</label>
@@ -783,6 +760,7 @@ function showAddPlace(tripId) {
 			</p>
 			<input type="submit" class="add-button js-add-button" value="Add">
 			<input type="button" data-trip="${tripId}" class="cancel-add-place" value="Cancel">
+			</fieldset>
 		</form>
 	</div>
 	`
