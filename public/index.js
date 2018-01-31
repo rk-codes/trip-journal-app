@@ -74,8 +74,8 @@ function placeToHtml(place, trip, isPlaceListDisplay=true) {
 		<div class="place-details-box">
 			<span class="placename">${place.name}</span>
 			<p class-"place-desc">${place.description}</p>
-			<button class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-edit fa-lg"></i><button>
-			<button class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-trash fa-lg"></i><button>
+			<button class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-edit fa-lg"></i></button>
+			<button class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-trash fa-lg"></i></button>
 		
 		</div>	
 	</li>
@@ -280,7 +280,17 @@ function handleHomeLogin(){
 	 	showLogIn();
 	})
 }
+function handleLoginFormSigupLink(){
+	$('main').on('click', '.create-account-link', function(event){
+		showSignUp();
+	})
+}
 
+function handleSignupFormLoginLink() {
+	$('main').on('click', '.login-account-link', function(event){
+		showLogIn();
+	})
+}
 //User clicks sign up on home page
 function handleHomeSignUp() {
 	$('.nav-container').on('click','.signup-button', function(event) {
@@ -657,6 +667,7 @@ function showSignUp() {
 				<label for="password">Password</label>
 				<input type="password" name="password" id="password" placeholder="Password" required><br>
 				<input type="submit" class="signup-form-button js-signup-button" value="Sign Up">
+				<p class="login-account">Already have an account?<a href="#" class="login-account-link"> Log In</a>
 			</fieldset>
 		</form>		
 	</section>
@@ -675,6 +686,7 @@ function showLogIn() {
 				<label for="password">Password</label>
 				<input type="password" name="password" id="login-password" placeholder="password" required><br>
 				<input type="submit" class="login-form-button js-login-button" value="Login">
+				<p class="no-account">Don't have an account?<a href="#" class="create-account-link"> Create account</a>
 				<p class="demo">For Demo:<br>username: demouser<br>password: demopassword</p>
 			</fieldset>
 		</form>
@@ -819,6 +831,8 @@ function init() {
 	showLandingPage();
 	handleHomeSignUp();
 	handleHomeLogin();
+	handleLoginFormSigupLink();
+	handleSignupFormLoginLink();
 	handleSignUpSubmission();
 	handleLoginSubmission();
 	handleUserHomeClick();
