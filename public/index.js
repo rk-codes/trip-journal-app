@@ -10,9 +10,11 @@ function tripToHtml(trip, isTripListDisplay=true){
 	html = `
 	<li class="trip-item">
 		<a class="tripname" data-id="${trip.id}">${trip.name}</a>
+		<i class="fa fa-calendar-o" style="font-size:24px"></i>
 		<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)}  - ${new Date(trip.endDate).toLocaleDateString('en-US',options)} </span>
-		<p class-"trip-country">${trip.country}</p>
-		
+		<p>
+			<i class="fa fa-flag" style="font-size:24px"></i><span class-"trip-country">${trip.country}</span>
+		</p>
 		<button class="edit-trip-button" data-id="${trip.id}"><i class="fa fa-edit fa-lg"></i></button>
 		<button class="delete-trip-button" data-id="${trip.id}"><i class="fa fa-trash fa-lg"></i></button>
 		
@@ -29,8 +31,10 @@ function tripToHtml(trip, isTripListDisplay=true){
 				</div>
 				<p>${trip.description}</h2>
 			</div>
-				<div class="places-container row"
+				<div class="places-container"
+				<ul>
 					${placesToHtml(trip)}
+				</ul>
 				</div>
 				<div class="places-buttons-box">
 					<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
@@ -59,20 +63,21 @@ function tripsToHtml(trips) {
 }
 function placeToHtml(place, trip, isPlaceListDisplay=true) {
 	let html = "";
-	const options = {year: 'numeric', month: 'short', day: 'numeric'};
+	const options = {weekday: 'short', month: 'short', day: 'numeric'};
 	if(isPlaceListDisplay) {
 	html = `
 	<li class="place-item">
-		<div class="place-date-box col-2">
-			<span class="place-date">${new Date(place.date).toLocaleDateString('en-US',options)}</span>
+		<div class="place-date-box">
+			<i class="fa fa-calendar-o" style="font-size:24px"></i>
+			<p class="place-date">${new Date(place.date).toLocaleDateString('en-US',options)}</p>
 		</div>
-		<div class="place-details-box col-10">
+		<div class="place-details-box">
 			<span class="placename">${place.name}</span>
 			<p class-"place-desc">${place.description}</p>
-			<input type="button" value="Edit" class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}">
-			<input type="button" value="Delete" class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}">
-		</div>
+			<button class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-edit fa-lg"></i><button>
+			<button class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-trash fa-lg"></i><button>
 		
+		</div>	
 	</li>
 	`
 	}
@@ -683,11 +688,15 @@ function showTripsSection(tripData) {
 	const content = `
 	<div class="outer">
 		<section class="trips-section">
-		<h2>My trips</h2>
+		<div class="my-trips">
+			<h2>My trips</h2>
+		</div>
 		<div class="trips-container ">
 		
 		</div>
-		<button type="submit" class="add-trip-button">Add New Trip</button>
+		<div class="trips-button-box">
+			<button type="submit" class="add-trip-button">Add New Trip</button>
+		</div>
 	</section>
 	</div>
 	
@@ -760,7 +769,7 @@ function showAddPlace(tripId) {
 				<label for='place-desc'>Description</label>
 				<textarea id="place-desc" rows="9" cols="50"></textarea>
 			</p>
-			<input type="submit" class="add-place-button js-add-button" value="Add">
+			<input type="submit" class="add-button js-add-button" value="Add">
 			<input type="button" data-trip="${tripId}" class="cancel-add-place" value="Cancel">
 		</form>
 	</div>
@@ -794,12 +803,11 @@ function updateNavigationBar(username, isLoggedIn) {
 
 function showLandingPage() {
 	const content = `
-	<div class="intro-section row">
+	<div class="intro-section">
 			<p>
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-			when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into 
-			electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-			and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+			 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of 
+			 type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into 
+			 electronic typesetting, remaining essentially unchanged. 
 			</p>
 			<button class="start-button">Get started</button>
 		</div>	
