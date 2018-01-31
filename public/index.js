@@ -15,8 +15,8 @@ function tripToHtml(trip, isTripListDisplay=true){
 		<p>
 			<i class="fa fa-flag" style="font-size:24px"></i><span class-"trip-country">${trip.country}</span>
 		</p>
-		<button class="edit-trip-button" data-id="${trip.id}"><i class="fa fa-edit fa-lg"></i></button>
-		<button class="delete-trip-button" data-id="${trip.id}"><i class="fa fa-trash fa-lg"></i></button>
+		<button class="edit-trip-button icon-button" data-id="${trip.id}"><i class="fa fa-edit fa-lg"></i></button>
+		<button class="delete-trip-button icon-button" data-id="${trip.id}"><i class="fa fa-trash fa-lg"></i></button>
 		
 	</li>
 	`
@@ -25,7 +25,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 		//console.log(trip.places);
 		html = `
 			<div class="trip-info">
-			<div class="box">
+			<div class="trip-info-box">
 				<h3>${trip.name}</h3>
 				<div class="trip-date">
 					<span>${new Date(trip.startDate).toLocaleDateString('en-US',options)} - ${new Date(trip.endDate).toLocaleDateString('en-US',options)}</span>
@@ -33,11 +33,11 @@ function tripToHtml(trip, isTripListDisplay=true){
 				<p>${trip.description}</h2>
 			</div>
 			</div>
-			<div class="box-one">
+			<div class="places-box">
 				<div class="places-container">
-				<ul>
+				
 					${placesToHtml(trip)}
-				</ul>
+			
 				</div>
 				<div class="places-buttons-box">
 					<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
@@ -78,8 +78,8 @@ function placeToHtml(place, trip, isPlaceListDisplay=true) {
 		<div class="place-details-box">
 			<span class="placename">${place.name}</span>
 			<p class-"place-desc">${place.description}</p>
-			<button class="edit-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-edit fa-lg"></i></button>
-			<button class="delete-place-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-trash fa-lg"></i></button>
+			<button class="edit-place-button icon-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-edit fa-lg"></i></button>
+			<button class="delete-place-button icon-button" data-id="${place._id}" data-trip="${trip._id}"><i class="fa fa-trash fa-lg"></i></button>
 		
 		</div>	
 	</li>
@@ -725,8 +725,8 @@ function showCreateTrip() {
 					<label for='trip-desc'>Trip Description</label>
 					<textarea id="trip-desc" rows="9" cols="50"></textarea>
 				</p>
-				<input type="submit" class="create-trip-button js-create-trip-button" value="Add Trip">
-				<input type="button" class="cancel-add-trip" value="Cancel">
+				<input type="submit" class="create-trip-button form-button" value="Add Trip">
+				<input type="button" class="cancel-add-trip form-button" value="Cancel">
 			</fieldset>
 		</form>	
 	</div>
@@ -758,8 +758,8 @@ function showAddPlace(tripId) {
 				<label for='place-desc'>Description</label>
 				<textarea id="place-desc" rows="9" cols="50"></textarea>
 			</p>
-			<input type="submit" class="add-button js-add-button" value="Add">
-			<input type="button" data-trip="${tripId}" class="cancel-add-place" value="Cancel">
+			<input type="submit" class="add-button form-button" value="Add">
+			<input type="button" data-trip="${tripId}" class="cancel-add-place form-button" value="Cancel">
 			</fieldset>
 		</form>
 	</div>
