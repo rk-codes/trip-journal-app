@@ -21,6 +21,12 @@ const app = express();
 // Logging
 app.use(morgan('common'));
 
+app.use(express.static('public'));
+
+app.get('/', (request, response) => {
+  response.sendFile(__dirname + '/public/index.html');
+});
+
 // CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

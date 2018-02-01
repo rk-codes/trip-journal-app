@@ -1,4 +1,5 @@
-const BASE_URL = 'http://localhost:8080/';
+
+//const {BASE_URL} = require('../config');
 let authToken;
 
 function tripToHtml(trip, isTripListDisplay=true){
@@ -108,7 +109,7 @@ function placesToHtml(trip){
 function getTrips() {
 	$.ajax({
 		method: 'GET',
-		url: `${BASE_URL}trips`,
+		url: `/trips`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -127,7 +128,7 @@ function getTrips() {
 function addTrip(tripData) {
 	$.ajax({
 		method: 'POST',
-		url: `${BASE_URL}trips`,
+		url: `/trips`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -146,7 +147,7 @@ function addTrip(tripData) {
 function deleteTrip(tripId) {
 	$.ajax({
 		method: 'DELETE',
-		url: `${BASE_URL}trips/${tripId}`,
+		url: `/trips/${tripId}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -162,7 +163,7 @@ function deleteTrip(tripId) {
 function updateTrip(tripId, trip) {
 	$.ajax({
 		method: 'PUT',
-		url: `${BASE_URL}trips/${tripId}`,
+		url: `/trips/${tripId}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -181,7 +182,7 @@ function updateTrip(tripId, trip) {
 function getTrip(tripId) {
 	$.ajax({
 		method: 'GET',
-		url: `${BASE_URL}trips/${tripId}`,
+		url: `/trips/${tripId}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -198,7 +199,7 @@ function getPlaces(tripId){
 	console.log("Getting places");
 	$.ajax({
 		method: 'GET',
-		url: `${BASE_URL}trips/${tripId}/places`,
+		url: `/trips/${tripId}/places`,
 		dataType: 'json',
 		contentType: 'application/json',
 		data: JSON.stringify(user),
@@ -215,7 +216,7 @@ function getPlaces(tripId){
 function deletePlace(tripId, placeId) {
 	$.ajax({
 		method: 'DELETE',
-		url: `${BASE_URL}trips/${tripId}/places/${placeId}`,
+		url: `/trips/${tripId}/places/${placeId}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -232,7 +233,7 @@ function deletePlace(tripId, placeId) {
 function addPlace(tripId, place){
 	$.ajax({
 		method: 'POST',
-		url: `${BASE_URL}trips/${tripId}/places`,
+		url: `/trips/${tripId}/places`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -251,7 +252,7 @@ function addPlace(tripId, place){
 function updatePlace(tripId, place) {
 	$.ajax({
 		method: 'PUT',
-		url: `${BASE_URL}trips/${tripId}/places/${place.id}`,
+		url: `/trips/${tripId}/places/${place.id}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -307,23 +308,23 @@ function handleSignUpSubmission(){
  $('main').on('submit', '.signup-form', function(event) {
  	event.preventDefault();
  	console.log('Signup form submitted');
-	const username = $('#username').val();
- 	console.log(username);
-	const password = $('#password').val();
-	const firstName = $('#firstname').val();
-	const lastName = $('#lastname').val();
-	let user = {username, password, firstname, lastname};
-	$.ajax({
-		method: 'POST',
-		url: `${BASE_URL}user`,
-		dataType: 'json',
-		contentType: 'application/json',
-		data: JSON.stringify(user),
-		success: function(input) {
-			console.log(input);
-			showLogIn();
-		},
-		error: function(err) {
+		const username = $('#username').val();
+ 		console.log(username);
+		const password = $('#password').val();
+		const firstName = $('#firstname').val();
+		const lastName = $('#lastname').val();
+		let user = {username, password, firstname, lastname};
+		$.ajax({
+			method: 'POST',
+			url: `/user`,
+			dataType: 'json',
+			contentType: 'application/json',
+			data: JSON.stringify(user),
+			success: function(input) {
+				console.log(input);
+				showLogIn();
+			},
+			error: function(err) {
 			console.error(err);
 		}
 
@@ -342,7 +343,7 @@ function handleLoginSubmission(){
 		let userInfo = {username, password}
 		$.ajax({
 			method: 'POST',
-			url: `${BASE_URL}auth/login`,
+			url: `/auth/login`,
 			data: JSON.stringify(userInfo),
 			contentType: 'application/json',
 			success: function(data) {
@@ -546,7 +547,7 @@ function showTripDetailsToEdit(tripId) {
 	$.ajax({
 
 		method: 'GET',
-		url: `${BASE_URL}trips/${tripId}`,
+		url: `/trips/${tripId}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -592,7 +593,7 @@ function showTripDetailsToEdit(tripId) {
 function showPlaceDetailsToEdit(tripId, placeId) {
 	$.ajax({
 		method: 'GET',
-		url: `${BASE_URL}trips/${tripId}/places/${placeId}`,
+		url: `/trips/${tripId}/places/${placeId}`,
 		headers: {
 			Authorization: `Bearer ${authToken}`
 		},
@@ -783,8 +784,8 @@ function updateNavigationBar(username, isLoggedIn) {
 	else{
 		$('.nav-container').html(`
 			<ul>
-				<li><button class="login-button">Login</button></li>
-				<li><button class="signup-button">Sign Up</button></li>
+				<li><input type="button" class="login-button" value="Login"></li>
+				<li><input type="button" class="signup-button" value="Sign Up"></li>
 			</ul>
 		`)
 	}
