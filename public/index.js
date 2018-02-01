@@ -2,7 +2,6 @@ const BASE_URL = 'http://localhost:8080/';
 let authToken;
 
 function tripToHtml(trip, isTripListDisplay=true){
-	//console.log(trip.id);
 	let html = "";
 	const options = {year: 'numeric', month: 'short', day: 'numeric'};
 
@@ -22,7 +21,6 @@ function tripToHtml(trip, isTripListDisplay=true){
 	`
 	}
 	else{
-		//console.log(trip.places);
 		html = `
 			<div class="trip-info">
 			<div class="before-trip"></div>
@@ -108,7 +106,6 @@ function placesToHtml(trip){
 }
 
 function getTrips() {
-	//console.log("Getting trips");
 	$.ajax({
 		method: 'GET',
 		url: `${BASE_URL}trips`,
@@ -118,8 +115,7 @@ function getTrips() {
 		dataType: 'json',
 		contentType: 'application/json',
 		success: function(tripData) {
-			//console.log(input);
-			//showLogIn();
+
 			showTripsSection(tripData);
 		},
 		error: function(err) {
@@ -224,7 +220,7 @@ function deletePlace(tripId, placeId) {
 			Authorization: `Bearer ${authToken}`
 		},
 		success: function(data) {
-			//showTripsSection(data); TODO
+		
 			getTrip(tripId);
 		},
 		error: function(err) {
@@ -243,7 +239,7 @@ function addPlace(tripId, place){
 		data: JSON.stringify(place),
 		contentType: 'application/json',
 		success: function(trip) {
-			//showTripDetails(trip); TODO
+		
 			getTrip(tripId);
 		},
 		error: function(err) {
@@ -311,27 +307,27 @@ function handleSignUpSubmission(){
  $('main').on('submit', '.signup-form', function(event) {
  	event.preventDefault();
  	console.log('Signup form submitted');
-		const username = $('#username').val();
- 		console.log(username);
-		const password = $('#password').val();
-		const firstName = $('#firstname').val();
-		const lastName = $('#lastname').val();
-		let user = {username, password, firstname, lastname};
-		$.ajax({
-			method: 'POST',
-			url: `${BASE_URL}user`,
-			dataType: 'json',
-			contentType: 'application/json',
-			data: JSON.stringify(user),
-			success: function(input) {
-				console.log(input);
-				showLogIn();
-			},
-			error: function(err) {
+	const username = $('#username').val();
+ 	console.log(username);
+	const password = $('#password').val();
+	const firstName = $('#firstname').val();
+	const lastName = $('#lastname').val();
+	let user = {username, password, firstname, lastname};
+	$.ajax({
+		method: 'POST',
+		url: `${BASE_URL}user`,
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify(user),
+		success: function(input) {
+			console.log(input);
+			showLogIn();
+		},
+		error: function(err) {
 			console.error(err);
-			}
+		}
 
-		})
+	})
  })		
 
 }
@@ -352,7 +348,6 @@ function handleLoginSubmission(){
 			success: function(data) {
 				authToken = data.authToken;
 				updateNavigationBar(username, true);
-				//showTripsSection();
 				getTrips();
 			},
 			error: function(err) {
@@ -439,7 +434,6 @@ function handleEditTrip() {
 	$('main').on('click','.edit-trip-button', function(event) {
 		console.log("Edit clicked");
 		const tripId = $(this).data('id');
-		//const trip = user.trips.find(function(trip) {return trip.id === tripId});
 		showTripDetailsToEdit(tripId);
 	})
 }
@@ -499,6 +493,7 @@ function handleUpdatePlace() {
 		const toUpdateData = {
 			id: placeId,
 			name: $('.place-name-entry').val(),
+			date: $('.form-place-date').val(),
 			description: $('#place-desc').val()
 		}
 		updatePlace(tripId, toUpdateData);
@@ -556,31 +551,30 @@ function showTripDetailsToEdit(tripId) {
 		},
 		contentType: 'application/json',
 		success: function(trip) {
-			//showTripDetails(tripData);
 			const startDate = formatDate(trip.startDate);
 			const endDate = formatDate(trip.endDate);
 			const content = `
 			<div class="edit-trip-box ">
-		<form class="edit-trip-form" data-id="${trip._id}">
-			<fieldset>
-				<legend>Edit Trip</legend>
-				<label for="tripname">Trip Name</label>
-				<input type="text" name="tripname" value="${trip.name}" class="trip-name"><br>
-				<label for="startdate">Start Date</label>
-				<input type="date" name="startdate" value="${startDate}" class="start-date"><br>
-				<label for="enddate">End Date</label>
-				<input type="date" name="enddate" value="${endDate}" class="end-date"><br>
-				<label for="country">Country</label>
-				<input type="text" name="country" value="${trip.country}" class="country"><br>
-				<p class="trip-description">
-					<label for='trip-desc'>Trip Description</label>
-					<textarea id="trip-desc" rows="9" cols="50" class="description">${trip.description}</textarea>
-				</p>
-				<input type="submit" class="update-trip-button form-button" value="Update">
-				<input type="button" class="cancel-edit-trip form-button" value="Cancel">
-			</fieldset>
-		</form>	
-		</div>
+				<form class="edit-trip-form" data-id="${trip._id}">
+					<fieldset>
+						<legend>Edit Trip</legend>
+						<label for="tripname">Trip Name</label>
+						<input type="text" name="tripname" value="${trip.name}" class="trip-name"><br>
+						<label for="startdate">Start Date</label>
+						<input type="date" name="startdate" value="${startDate}" class="start-date"><br>
+						<label for="enddate">End Date</label>
+						<input type="date" name="enddate" value="${endDate}" class="end-date"><br>
+						<label for="country">Country</label>
+						<input type="text" name="country" value="${trip.country}" class="country"><br>
+						<p class="trip-description">
+							<label for='trip-desc'>Trip Description</label>
+							<textarea id="trip-desc" rows="9" cols="50" class="description">${trip.description}</textarea>
+						</p>
+						<input type="submit" class="update-trip-button form-button" value="Update">
+						<input type="button" class="cancel-edit-trip form-button" value="Cancel">
+					</fieldset>
+				</form>	
+			</div>
 		`
 		$('main').html(content);
 
@@ -610,6 +604,8 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 						<legend>Edit Place</legend>
 						<label for="placename">Place Name</label>
 						<input type="text" name="placename" class="place-name-entry" value="${place.name}"><br>
+						<label for="date">Visited Date</label>
+						<input type="date" name="date" value="${formatDate(place.date)}" class="form-place-date"><br>
 						<p class="place-description">
 							<label for='place-desc'>Description</label>
 							<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
