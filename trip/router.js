@@ -189,11 +189,15 @@ router.post('/:id/places', jwtAuth, jsonParser, (req, res) => {
       }
     }
     console.log(req.params.id);
-    Place.create({
+    const newPlace = {
       trip: mongoose.Types.ObjectId(req.params.id),
       name: req.body.name,
-      description: req.body.description
-    })
+      description: req.body.description   
+    }
+    if(req.body.date) {
+      newPlace.date = req.body.date;
+    }
+    Place.create(newPlace)
     .then(function(place) {
       return Trip.findByIdAndUpdate(req.params.id,
         { $push: {"places": place} },
@@ -246,7 +250,7 @@ router.put('/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
   }
 
   const toUpdate = {};
-  const updateableFields = ['name', 'description'];
+  const updateableFields = ['name', 'description', 'date'];
 
   updateableFields.forEach(field => {
     if (field in req.body) {

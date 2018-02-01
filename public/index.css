@@ -2,122 +2,443 @@
 	box-sizing: border-box;
 	font-size: 100%;
 }
+
 body{
 	font-size: 18px;
+	margin: 0 auto;
+	height: 100%;
+	background-image: url(https://static.guideadvisor.com/wp-content/uploads/thumb-cache/shutterstock_91028072-3e46b96aa4275596a5bb6c403b7cec12-840x554-85-nocrop.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
 }
-header {
-	background-color: cyan;
+
+
+.header-container{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: white;
 }
-h1{
-	border: 1px solid yellow; /*remove later*/
-	font-size: 1.5em;
+.logo{
+	margin-left: 5%;
+	font-size: 2em;
+	font-family: 'Special Elite', cursive;
 }
-.nav-container{
-	border: 1px solid red; /*remove later*/
-}
-.nav-container ul{
-	text-decoration: none;
-	text-align: center;
-}
-.nav-container li{
+header ul li {
+	display: inline-block;
 	list-style: none;
-	display: inline-block;;
+	margin: 10px;
+	font-size: 0.9em;
 }
+nav{
+	align-self: center;
+}
+
 .login-button, .signup-button{
-	margin-left: 10px;
+	margin-left: 15px;
+	margin-right: 15px;
+	padding: 10px;
+	border-radius: 6px;
+	border: 0;
+	background-color: #50959c;
+	color: #fbe986;
+}
+.login-button:hover, .signup-button:hover{
+	color: #8af7c7;
 }
 .intro-section {
-	border: 1px solid grey; /*remove later*/
+	margin: 5%;
 	text-align: center;
 	position: absolute;
 	top: 35%;
 	left: 0;
 	right: 0;
+	background-color: #7daeaf;
+	color: floralwhite;
+	opacity: 0.8;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.intro-section p {
+	font-size: 1.3em; 
+}
+.start-button {
+	align-self: center;
+	border-radius: 10px;
+	background-color: #deb22e;
+	padding: 10px;
+	font-size: 1.2em;
+	margin-bottom: 8px;
 }
 .login-section, .signup-section{
-	margin: 0 auto;
-	width: 40%;
+	max-width: 500px;
+    padding: 10px 20px;
+    background: #f4f7f8;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
 }
-.login-form{
-	text-align: left;
+.signup-section fieldset,
+.login-section fieldset{
+	border: none;
+}
+fieldset legend {
+    background: #313031;
+    color: white;
+    padding: 5px 10px ;
+    border-radius: 5px;
+    box-shadow: 0 0 0 2px #98920a5c;
+    margin-left: 20px;
+}
+.signup-section h3,
+.login-section h3{
+    /*background: #4D4D4D;*/
+    text-transform: uppercase;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #797979;
+    font-size: 18px;
+    font-weight: 100;
+    padding: 20px;
+    margin: -20px -30px 0px -25px;
+}
+input[type="text"],
+input[type="password"] {
+	 width: 100%;
+}
+input[type="text"],
+input[type="date"],
+textarea {
+	font-family: 'Open Sans', sans-serif;
+}
+.signup-section input[type="text"],
+.signup-section input[type="password"],
+.login-section input[type="text"],
+.login-section input[type="password"] {
+   
+    padding: 7px;
+    margin-top: 8px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    font: 16px Arial, Helvetica, sans-serif;
+    height: 35px;
 }
 .login-form-button, .signup-form-button{
-	margin-top: 8px;
+	box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 14px;
+    padding: 8px 18px;
+    text-transform: uppercase;
+    margin-top: 10px;
 }
-.home-link, .logout-link{
-	margin: 15px;
+.no-account, .login-account{
+	color: grey;
+	margin-right: 10px;
+}
+.create-account-link, .login-account-link{
+	text-decoration: none;
+	color: #0a84c1;
+	cursor: pointer;
+}
+
+.edit-trip-form, .edit-place-form, .create-trip-form, .add-place-form{
+	/*max-width: 500px;*/
+    padding: 10px 20px;
+    background: #f4f7f8;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+.create-trip-form, .edit-trip-form, .create-trip-form, .add-place-form{
+	background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg);
+}
+.home-link, .logout-link {
+	margin: 10px;
+    font-size: 1.5em;
+    color: #1b8e96;
+    text-decoration: none;
+    border-bottom: 1px solid darkorange;
+  }
+a:hover {
+	color: darkorange;
+	border-width: 3px;
+}
+.icon-button:hover {
+	color: darkorange;
+}
+.start-button:hover{
+	background-color: #9af2f3;
+}
+.form-button:hover{
+	background-color: darkorange;
 }
 .user-box{
 	margin-top: 10px;
 }
 .user-box span{
 	text-align: center;
+	position: relative;
+    right: -75px;
+    top: 14px;
+    font-family: 'Special Elite', cursive;
 }
 input {
-	margin-top: 8px;
+	margin-top: 4px;
 	margin-bottom: 8px;
 	padding-left: 5px;
 	
 }
 label{
 	display: block;
+	margin-top: 8px;
 }
-.trips-section, .trip-info {
+.trips-section {
 	max-width: 600px;
  	margin: 0 auto;
+ 	opacity: 0.9;
+ 	background-color: #57b7b7;
+	margin-top: 15px;
 }
-.trip-info{
-	margin-top: 20px;
-	margin-bottom: 20px;
-	padding: 10px;
-	border: 1px solid red;
-}
-.trip-date{
-	text-align: right;
-}
-.tripname {
-	display: block;
-	color: grey;
-	font-style: italic;
-	font-size: 20px;
-	margin-bottom: 15px;
-}
+
 .trip-list {
   list-style: none;
   padding-left: 0;
 }
 
-.trip-list > li {
-	margin-bottom: 20px;
-	border: 1px solid grey;
-	padding: 20px;
-}
-.create-trip-section{
-	margin: 0 auto;
-	max-width: 600px;
-}
-.places-container{
-	border: 1px solid grey;
+.my-trips {
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.5em;
+	color: white;
 	padding: 10px;
 }
-.place-list > li {
+
+.trips-button-box, .my-trips{
+	background-color: black;
+	opacity: 0.8;
+}
+.trips-button-box{
+	display: flex;
+	justify-content: center;
+}
+.trip-item {
+	background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg);
+	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
 	margin-bottom: 20px;
 	border: 1px solid grey;
 	padding: 20px;
 }
-.place-item {
-	list-style: none;
+
+.trip-item span {
+	margin-left: 10px;
 }
-.trip-info .dates{
-	display: inline;
+.trip-item p{
+	font-family: 'Shadows Into Light Two', cursive;
+	font-weight: 600;
+}
+.tripname {
+	display: block;
 	color: grey;
+	font-style: italic;
+	font-size: 1.4em;
+	font-weight: bold;
+	margin-bottom: 15px;
 }
+
+/* Trip details */
+.trip-details{
+	margin: 5% 5% auto;
+}
+
+.trip-info {
+  	margin-top: 7%;
+  	margin-bottom: 10%;
+}
+
+.trip-info-box{
+	background-color: white;
+	border: 1px solid #fdbd3b;
+	top: -50px;
+	padding: 5px;
+	display: inline-block;
+	margin-bottom: 5%;
+    
+}
+
+@media screen and (min-width : 600px) {
+	.before-trip, .after-trip {
+		border-bottom: 2px solid darkorange;
+		display: inline-block;
+		width: 23%;
+	}
+	.trip-info-box{
+		width: 50%;
+	}
+}
+
 .trip-info h3 {
 	display: inline;
+	font-family: 'Oswald', sans-serif;
+	font-size: 1.3em;
 }
+.trip-info p {
+	font-family: 'Open Sans', sans-serif;
+	color: grey;
+}
+.trip-date{
+	color: #847878;
+	background-color: linen;
+}
+
+.places-container{
+	background-color: white;
+	padding: 10px;
+}
+
+.place-list{
+	padding-left: 0;
+}
+
+.place-item{
+	display: flex;
+	list-style: none;
+	margin-bottom: 20px;
+}
+
+.places-container ul{
+	padding-left: 5px;
+}
+
 .trip-description * {
 	vertical-align: middle;
 }
-.create-trip-button {
-	display: block;
+
+.place-date-box {
+	color: #2897ab;
+	margin-bottom: 10px;
+	margin-right: 15px;
+	margin-left: 20px;
+	padding: 8px;
+
+	font-size: 0.9em;
+	font-weight: 600;
+	border-bottom: 1px solid #e61b74;
+	text-align: center;
+}
+.place-details-box {
+	margin-bottom: 10px;
+	margin-right: 15px;
+	margin-left: 20px;
+	padding: 8px;
+	border-bottom: 1px solid grey;
+	width: 100%;
+}
+.placename{
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.place-desc {
+	font-family: 'Open Sans', sans-serif;
+    color: #5c5f63;
+}
+
+.create-trip-box, .edit-trip-box, 
+.add-place-box, .edit-place-box{
+	max-width: 600px;
+ 	margin: 0 auto;
+}
+
+textarea{
+	width: 100%; /* textarea expand to 100% of parent*/
+}
+
+
+/* Buttons */
+.create-trip-button{
+	display: inline-block;
+	margin-right: 15px;
+}
+.create-trip-button, .cancel-add-trip, .add-place-button, 
+.cancel-add-place, .update-trip-button, .cancel-edit-trip, 
+.back-button, .add-trip-button, .add-button, .update-button, .cancel-edit-place {
+	background-color: #055f5f;
+    border: 1px solid #27A0A0;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 0.9em;
+    padding: 8px 18px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.add-place-button, .back-button{
+	margin-left: 10px;
+}
+.edit-trip-button, .delete-trip-button, .edit-place-button,
+.delete-place-button {
+	border: none;
+	background-color: inherit;
+}
+.places-buttons-box {
+	background-color: #fbfaf7;
+	opacity: 0.8;
+}
+
+textarea{
+	box-sizing: border-box;
+}
+
+/* Media query*/
+@media screen and (max-width : 600px) {
+
+	.header-container {
+		display: flex;
+		flex-direction: column;
+    }
+    .nav-container  {
+		margin: 0;
+		align-self: left;
+    }
+    .user-box{
+    	margin: 0;
+		align-self: left;
+    }
+    .nav-container ul {
+    	padding-left: 0;
+    }
+    header ul li{
+    	display: inline-block;
+    }
+
+    .user-box span{
+    	right: -23px;
+    }
+    .login-section{
+    	margin-left: 2%;
+    	margin-right: : 2%;
+    }
+    .trips-section{
+    	margin-left: 5%;
+    	margin-right: 5%;
+    }
+    .trip-info{
+    	margin-top: 20%;
+    }
+
+    .create-trip-box, .edit-trip-box, 
+	.add-place-box, .edit-place-box {
+   		 margin: 5%;
+ 	}
+
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
+	.trip-info-box{
+		top: -40px;
+	}
+	.places-box{
+		bottom: -50px;
+	}
+
 }
