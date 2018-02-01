@@ -25,6 +25,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 		//console.log(trip.places);
 		html = `
 			<div class="trip-info">
+			<div class="before-trip"></div>
 			<div class="trip-info-box">
 				<h3>${trip.name}</h3>
 				<div class="trip-date">
@@ -32,6 +33,7 @@ function tripToHtml(trip, isTripListDisplay=true){
 				</div>
 				<p>${trip.description}</h2>
 			</div>
+			<div class="after-trip"</div>
 			</div>
 			<div class="places-box">
 				<div class="places-container">
