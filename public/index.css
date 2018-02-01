@@ -124,6 +124,9 @@ textarea {
     font: 16px Arial, Helvetica, sans-serif;
     height: 35px;
 }
+textarea {
+	padding: 5px;
+}
 .login-form-button, .signup-form-button{
 	box-shadow: inset 0px 1px 0px 0px #45D6D6;
     background-color: #2CBBBB;
