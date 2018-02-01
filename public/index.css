@@ -246,18 +246,13 @@ label{
 }
 
 .trip-info {
-	/*border-bottom: 2px solid #fdbd3b;*/
-  	/*position: relative;*/
   	margin-top: 7%;
   	margin-bottom: 10%;
 }
 
 .trip-info-box{
 	background-color: white;
-	
 	border: 1px solid #fdbd3b;
-	/*margin: 0 25%;*/
-	/*position: absolute;*/
 	top: -50px;
 	padding: 5px;
 	display: inline-block;
@@ -267,7 +262,7 @@ label{
 
 @media screen and (min-width : 600px) {
 	.before-trip, .after-trip {
-		border-bottom: 1px solid red;
+		border-bottom: 2px solid darkorange;
 		display: inline-block;
 		width: 23%;
 	}
@@ -286,8 +281,10 @@ label{
 	color: grey;
 }
 .trip-date{
-	text-align: right;
-	display: inline;
+	/*text-align: right;
+	display: inline;*/
+	color: #847878;
+	background-color: linen;
 }
 
 .places-box{
@@ -393,7 +390,7 @@ textarea{
 
 /* Media query*/
 @media screen and (max-width : 600px) {
-	
+
 	.header-container {
 		display: flex;
 		flex-direction: column;
