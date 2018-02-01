@@ -1,5 +1,4 @@
 
-//const {BASE_URL} = require('../config');
 let authToken;
 
 function tripToHtml(trip, isTripListDisplay=true){
@@ -611,13 +610,13 @@ function showSignUp() {
 		<h3>Sign Up</h3>
 		<form class="signup-form">
 			<fieldset>
-				<label for="firstname">First name</label>
+				<label for="firstname">First name<span class="required"> * </span></label>
 				<input type="text" name="firstname" id="firstname" placeholder="First name" required><br>
-				<label for="lastname">Last name</label>
+				<label for="lastname">Last name<span class="required"> * </span></label>
 				<input type="text" name="lastname" id="lastname" placeholder="Last name" required><br>
-				<label for="username">Username</label>
+				<label for="username">Username<span class="required"> * </span></label>
 				<input type="text" name="username" id="username" placeholder="Username" required><br>
-				<label for="password">Password</label>
+				<label for="password">Password<span class="required"> * </span></label>
 				<input type="password" name="password" id="password" placeholder="Password" required><br>
 				<input type="submit" class="signup-form-button js-signup-button" value="Sign Up">
 				<p class="login-account">Already have an account?<a href="#" class="login-account-link"> Log In</a>
@@ -691,14 +690,14 @@ function showCreateTrip() {
 		<form class="create-trip-form">
 			<fieldset>
 			<legend>Add New Trip</legend>
-				<label for="tripname">Trip Name</label>
-				<input type="text" name="tripname" class="js-trip-name-entry"><br>
-				<label for="startdate">Start Date</label>
-				<input type="date" name="startdate" class="js-trip-start-entry"><br>
-				<label for="enddate">End Date</label>
-				<input type="date" name="enddate" class="js-trip-end-entry"><br>
-				<label for="country">Country</label>
-				<input type="text" name="country" class="js-trip-country-entry"><br>
+				<label for="tripname">Trip Name<span class="required"> * </span></label>
+				<input type="text" name="tripname" class="js-trip-name-entry" required><br>
+				<label for="startdate">Start Date<span class="required"> * </span></label>
+				<input type="date" name="startdate" class="js-trip-start-entry" required><br>
+				<label for="enddate">End Date<span class="required"> * </span></label>
+				<input type="date" name="enddate" class="js-trip-end-entry" required><br>
+				<label for="country">Country<span class="required"> * </span></label>
+				<input type="text" name="country" class="js-trip-country-entry" required><br>
 				<p class="trip-description">
 					<label for='trip-desc'>Trip Description</label>
 					<textarea id="trip-desc" rows="9" cols="50"></textarea>
@@ -773,9 +772,8 @@ function showLandingPage() {
 	const content = `
 	<div class="intro-section">
 			<p>
-			 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of 
-			 type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into 
-			 electronic typesetting, remaining essentially unchanged. 
+				<span class="intro-travel">Bitten by Wanderlust?</span><br>
+				Get more out of your trip by documenting your amazing travel experiences with <span class="intro-name">Trip Journal</span>
 			</p>
 			<button class="start-button">Get started</button>
 		</div>	
