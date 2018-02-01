@@ -91,6 +91,7 @@ fieldset legend {
     border-radius: 5px;
     box-shadow: 0 0 0 2px #98920a5c;
     margin-left: 20px;
+    margin-bottom: 15px;
 }
 .signup-section h3,
 .login-section h3{
@@ -124,7 +125,7 @@ textarea {
     height: 35px;
 }
 textarea {
-	padding: 5px;
+	padding: 8px;
 }
 .login-form-button, .signup-form-button{
 	box-shadow: inset 0px 1px 0px 0px #45D6D6;
@@ -189,13 +190,13 @@ a:hover {
 }
 input {
 	margin-top: 4px;
-	margin-bottom: 8px;
+	margin-bottom: 15px;
 	padding-left: 5px;
 	
 }
 label{
 	display: block;
-	margin-top: 8px;
+	margin-bottom: 5px;
 }
 .trips-section {
 	max-width: 600px;
