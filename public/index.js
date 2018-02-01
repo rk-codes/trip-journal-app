@@ -42,8 +42,8 @@ function tripToHtml(trip, isTripListDisplay=true){
 			
 				</div>
 				<div class="places-buttons-box">
-					<input type="button" data-id="${trip._id}" class="add-place-button" value="Add Place">
-					<input type="button" data-id="${trip._id}" class="back-button" value="Back to trips">
+					<input type="button" data-id="${trip._id}" class="add-place-button form-button" value="Add Place">
+					<input type="button" data-id="${trip._id}" class="back-button form-button" value="Back to trips">
 				</div>
 			</div>
 				
@@ -576,8 +576,8 @@ function showTripDetailsToEdit(tripId) {
 					<label for='trip-desc'>Trip Description</label>
 					<textarea id="trip-desc" rows="9" cols="50" class="description">${trip.description}</textarea>
 				</p>
-				<input type="submit" class="update-trip-button" value="Update">
-				<input type="button" class="cancel-edit-trip" value="Cancel">
+				<input type="submit" class="update-trip-button form-button" value="Update">
+				<input type="button" class="cancel-edit-trip form-button" value="Cancel">
 			</fieldset>
 		</form>	
 		</div>
@@ -614,8 +614,8 @@ function showPlaceDetailsToEdit(tripId, placeId) {
 							<label for='place-desc'>Description</label>
 							<textarea id="place-desc" rows="9" cols="50">${place.description}</textarea>
 						</p>
-						<input type="submit" class="update-button js-update-button" value="Update">
-						<input type="button" data-trip="${tripId}" class="cancel-edit-place" value="Cancel">
+						<input type="submit" class="update-button form-button" value="Update">
+						<input type="button" data-trip="${tripId}" class="cancel-edit-place form-button" value="Cancel">
 			 		</fieldset>
 				</form>
 			</div>
@@ -684,7 +684,7 @@ function showTripsSection(tripData) {
 		
 		</div>
 		<div class="trips-button-box">
-			<button type="submit" class="add-trip-button">Add New Trip</button>
+			<button type="submit" class="add-trip-button form-button">Add New Trip</button>
 		</div>
 	</section>
 	</div>

@@ -2,6 +2,7 @@
 	box-sizing: border-box;
 	font-size: 100%;
 }
+
 body{
 	font-size: 18px;
 	margin: 0 auto;
@@ -12,6 +13,7 @@ body{
 	background-attachment: fixed;
 	background-position: center;
 }
+
 
 .header-container{
 	display: flex;
@@ -33,6 +35,13 @@ header ul li {
 nav{
 	align-self: center;
 }
+
+
+
+
+
+
+
 .login-button, .signup-button{
 	margin-left: 15px;
 	margin-right: 15px;
@@ -350,9 +359,21 @@ label{
     color: #5c5f63;
 }
 
-.add-place-box, .edit-place-box, .create-trip-box, .edit-trip-box{
+/*UNDO LATER*/
+/*.add-place-box, .edit-place-box, .create-trip-box, .edit-trip-box{
 	display: flex;
+}*/
+
+.create-trip-box, .edit-trip-box, 
+.add-place-box, .edit-place-box{
+	max-width: 600px;
+ 	margin: 0 auto;
 }
+
+textarea{
+	width: 100%; /* textarea expand to 100% of parent*/
+}
+
 
 /* Buttons */
 .create-trip-button{
@@ -399,6 +420,10 @@ textarea{
 		margin: 0;
 		align-self: left;
     }
+    .user-box{
+    	margin: 0;
+		align-self: left;
+    }
     .nav-container ul {
     	padding-left: 0;
     }
@@ -420,14 +445,20 @@ textarea{
     .trip-info{
     	margin-top: 20%;
     }
-    .places-box{
-		/*position: relative;*/
+
+    .create-trip-box, .edit-trip-box, 
+	.add-place-box, .edit-place-box {
+   		 margin: 5%;
+ 	}
+
+   /* .places-box{
+		position: relative;
 		bottom: -110px;
-	}
-	.edit-place-box{
+	}*/
+	/*.edit-place-box{
 		margin-left: 2%;
     	margin-right: : 2%;
-	}
+	}*/
 }
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
 	.trip-info-box{
