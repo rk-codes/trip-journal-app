@@ -455,6 +455,7 @@ function handleCreatePlaceInfo() {
 		const tripId = $(this).data('id');
 		const placeData = {
 			name: $('.js-place-name-entry').val(),
+			date: $('.visit-date').val(),
 			description: $('#place-desc').val()
 		}
 		$('.add-place-form')[0].reset();
@@ -751,7 +752,7 @@ function showAddPlace(tripId) {
 			<label for="placename">Place Name</label>
 			<input type="text" name="placename" class="js-place-name-entry"><br>
 			<label for="date">Date Visited</label>
-			<input type="date" name="date" class="js-trip-start-entry"><br>			
+			<input type="date" name="date" class="visit-date"><br>			
 			<p class="place-description">
 				<label for='place-desc'>Description</label>
 				<textarea id="place-desc" rows="9" cols="50"></textarea>
