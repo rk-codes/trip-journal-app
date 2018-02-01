@@ -44,39 +44,50 @@ nav{
 	border: 0;
 	background-color: #50959c;
 	color: #fbe986;
+	cursor: pointer;
 }
 .login-button:hover, .signup-button:hover{
 	color: #8af7c7;
 }
 .intro-section {
+	background-image: url(https://static.guideadvisor.com/wp-content/uploads/thumb-cache/shutterstock_91028072-3e46b96aa4275596a5bb6c403b7cec12-840x554-85-nocrop.jpg);
 	margin: 5%;
 	text-align: center;
 	position: absolute;
 	top: 35%;
 	left: 0;
 	right: 0;
-	background-color: #7daeaf;
 	color: floralwhite;
 	opacity: 0.8;
 	padding-left: 8px;
 	padding-right: 8px;
 }
+.intro-travel{
+	font-size: 1.4em;
+}
+.intro-name{
+	font-family: 'Special Elite', cursive;
+	font-weight: bold;
+}
 .intro-section p {
 	font-size: 1.3em; 
+	font-family: 'Playfair Display', serif;
+	color: floralwhite;
 }
 .start-button {
 	align-self: center;
 	border-radius: 10px;
-	background-color: #deb22e;
+	background-color: #f9be0f;
 	padding: 10px;
 	font-size: 1.2em;
 	margin-bottom: 8px;
+	cursor: pointer;
 }
 .login-section, .signup-section{
 	max-width: 500px;
-    padding: 10px 20px;
-    background: #f4f7f8;
-    margin: 40px auto;
+	padding: 10px 20px;
+	background: #f4f7f8;
+	margin: 40px auto;
     padding: 20px;
     border-radius: 8px;
 }
@@ -91,6 +102,10 @@ fieldset legend {
     border-radius: 5px;
     box-shadow: 0 0 0 2px #98920a5c;
     margin-left: 20px;
+    margin-bottom: 15px;
+}
+form .required{
+	color: red;
 }
 .signup-section h3,
 .login-section h3{
@@ -105,7 +120,7 @@ fieldset legend {
 }
 input[type="text"],
 input[type="password"] {
-	 width: 100%;
+	width: 100%;
 }
 input[type="text"],
 input[type="date"],
@@ -116,13 +131,15 @@ textarea {
 .signup-section input[type="password"],
 .login-section input[type="text"],
 .login-section input[type="password"] {
-   
-    padding: 7px;
+	padding: 7px;
     margin-top: 8px;
     border: none;
     border-bottom: 1px solid #ddd;
     font: 16px Arial, Helvetica, sans-serif;
     height: 35px;
+}
+textarea {
+	padding: 8px;
 }
 .login-form-button, .signup-form-button{
 	box-shadow: inset 0px 1px 0px 0px #45D6D6;
@@ -146,7 +163,6 @@ textarea {
 }
 
 .edit-trip-form, .edit-place-form, .create-trip-form, .add-place-form{
-	/*max-width: 500px;*/
     padding: 10px 20px;
     background: #f4f7f8;
     margin: 40px auto;
@@ -158,10 +174,10 @@ textarea {
 }
 .home-link, .logout-link {
 	margin: 10px;
-    font-size: 1.5em;
-    color: #1b8e96;
-    text-decoration: none;
-    border-bottom: 1px solid darkorange;
+	font-size: 1.5em;
+	color: #1b8e96;
+	text-decoration: none;
+	border-bottom: 1px solid darkorange;
   }
 a:hover {
 	color: darkorange;
@@ -173,7 +189,8 @@ a:hover {
 .start-button:hover{
 	background-color: #9af2f3;
 }
-.form-button:hover{
+.form-button:hover, .signup-form-button:hover,
+.login-form-button:hover{
 	background-color: darkorange;
 }
 .user-box{
@@ -182,31 +199,31 @@ a:hover {
 .user-box span{
 	text-align: center;
 	position: relative;
-    right: -75px;
-    top: 14px;
-    font-family: 'Special Elite', cursive;
+	right: -75px;
+	top: 14px;
+	font-family: 'Special Elite', cursive;
 }
 input {
 	margin-top: 4px;
-	margin-bottom: 8px;
+	margin-bottom: 15px;
 	padding-left: 5px;
 	
 }
 label{
 	display: block;
-	margin-top: 8px;
+	margin-bottom: 5px;
 }
 .trips-section {
 	max-width: 600px;
- 	margin: 0 auto;
- 	opacity: 0.9;
- 	background-color: #57b7b7;
+	margin: 0 auto;
+	opacity: 0.9;
+	background-color: #57b7b7;
 	margin-top: 15px;
 }
 
 .trip-list {
-  list-style: none;
-  padding-left: 0;
+	list-style: none;
+	padding-left: 0;
 }
 
 .my-trips {
@@ -241,31 +258,29 @@ label{
 }
 .tripname {
 	display: block;
-	color: grey;
+	color: #02375f;
 	font-style: italic;
 	font-size: 1.4em;
 	font-weight: bold;
 	margin-bottom: 15px;
+	cursor: pointer;
 }
 
 /* Trip details */
 .trip-details{
 	margin: 5% 5% auto;
 }
-
 .trip-info {
-  	margin-top: 7%;
-  	margin-bottom: 10%;
+	margin-top: 7%;
+	margin-bottom: 10%;
 }
-
 .trip-info-box{
 	background-color: white;
 	border: 1px solid #fdbd3b;
 	top: -50px;
 	padding: 5px;
 	display: inline-block;
-	margin-bottom: 5%;
-    
+	margin-bottom: 5%;    
 }
 
 @media screen and (min-width : 600px) {
@@ -322,7 +337,6 @@ label{
 	margin-right: 15px;
 	margin-left: 20px;
 	padding: 8px;
-
 	font-size: 0.9em;
 	font-weight: 600;
 	border-bottom: 1px solid #e61b74;
@@ -342,13 +356,13 @@ label{
 }
 .place-desc {
 	font-family: 'Open Sans', sans-serif;
-    color: #5c5f63;
+	color: #5c5f63;
 }
 
 .create-trip-box, .edit-trip-box, 
 .add-place-box, .edit-place-box{
 	max-width: 600px;
- 	margin: 0 auto;
+	margin: 0 auto;
 }
 
 textarea{
@@ -365,13 +379,13 @@ textarea{
 .cancel-add-place, .update-trip-button, .cancel-edit-trip, 
 .back-button, .add-trip-button, .add-button, .update-button, .cancel-edit-place {
 	background-color: #055f5f;
-    border: 1px solid #27A0A0;
-    color: #FFFFFF;
-    font-family: 'Open Sans Condensed', sans-serif;
-    font-size: 0.9em;
-    padding: 8px 18px;
-    margin-top: 10px;
-    margin-bottom: 15px;
+	border: 1px solid #27A0A0;
+	color: #FFFFFF;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 0.9em;
+	padding: 8px 18px;
+	margin-top: 10px;
+	margin-bottom: 15px;
 }
 .add-place-button, .back-button{
 	margin-left: 10px;
@@ -380,6 +394,7 @@ textarea{
 .delete-place-button {
 	border: none;
 	background-color: inherit;
+	cursor: pointer;
 }
 .places-buttons-box {
 	background-color: #fbfaf7;
@@ -415,9 +430,8 @@ textarea{
     .user-box span{
     	right: -23px;
     }
-    .login-section{
+    .login-section, .signup-section{
     	margin-left: 2%;
-    	margin-right: : 2%;
     }
     .trips-section{
     	margin-left: 5%;
@@ -433,12 +447,4 @@ textarea{
  	}
 
 }
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
-	.trip-info-box{
-		top: -40px;
-	}
-	.places-box{
-		bottom: -50px;
-	}
 
-}
