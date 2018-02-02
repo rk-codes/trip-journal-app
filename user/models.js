@@ -39,28 +39,7 @@ UserSchema.statics.findByUserName = function(username) {
 	return this.findOne({username: username});
 }
 
-// UserSchema.statics.login = function(username, password) {
-//   const user = findByUserName(username);
-//   if(user && user.validatePassword(password)) {
-//     return user;
-//   } else {
-//     return;
-//   }
-// }
-
-// UserSchema.statics.createWithPassword = function(username, password, firstName = '', lastName = '') {
-
-//   return hashPassword(password). then (function(hashedPassword) {
-//     return User.create({
-//       name: username,
-//       password: hashedPassword,
-//       firstName: firstName,
-//       lastName: lastName
-//     });
-  
-// }
 const User = mongoose.model('User', UserSchema);
 
 module.exports = {User};
 
-//.populate({path: 'trips', populate: {path: 'places'}}) - TODO
