@@ -773,7 +773,8 @@ function showLandingPage() {
 	<div class="intro-section">
 			<p>
 				<span class="intro-travel">Bitten by Wanderlust?</span><br>
-				Get more out of your trip by documenting your amazing travel experiences with <span class="intro-name">Trip Journal</span>
+				Jot down your amazing experiences in the <span class="intro-name">Trip Journal</span>
+				and get more out of your travels!
 			</p>
 			<button class="start-button">Get started</button>
 		</div>	
