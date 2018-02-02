@@ -31,5 +31,4 @@ Trip journal is an app that allows users to document their travel experiences.
 ## Screenshots
 
 ![screenshot](screenshots/Landing_page.png)
-![screenshot](screenshots/Trips _list_paget.png)
 ![screenshot](screenshots/Trip_details_page.png)
