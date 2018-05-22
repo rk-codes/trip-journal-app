@@ -243,7 +243,8 @@ label{
 	justify-content: center;
 }
 .trip-item {
-	background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg);
+	/* background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg); */
+	background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyWeOSz2U6hAeNnsgHlAj-2vEfczeBsCm_lO5fkHhTbR4Sh5XQ);
 	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
 	margin-bottom: 20px;
 	border: 1px solid grey;
