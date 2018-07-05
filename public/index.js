@@ -1,5 +1,6 @@
 
 let authToken;
+let loggedIn = false;
 
 function tripToHtml(trip, isTripListDisplay=true){
 	let html = "";
@@ -90,8 +91,6 @@ function placeToHtml(place, trip, isPlaceListDisplay=true) {
 }
 
 function placesToHtml(trip){
-	console.log("*************************************")
-	console.log(trip);
 	return trip.places && trip.places.length > 0 ? `
 	<ul class="place-list">
 		${trip.places.map(function(place) {
@@ -300,7 +299,6 @@ function handleSignUpSubmission(){
  	event.preventDefault();
  	console.log('Signup form submitted');
 		const username = $('#username').val();
- 		console.log(username);
 		const password = $('#password').val();
 		const firstName = $('#firstname').val();
 		const lastName = $('#lastname').val();
@@ -326,9 +324,7 @@ function handleSignUpSubmission(){
 function handleLoginSubmission(){
 	$('main').on('submit','.login-form', function(event) {
 		event.preventDefault();
-		console.log('Login form submitted');
 		const username = $('#login-username').val();
- 		console.log(username);
 		const password = $('#login-password').val();
 		let userInfo = {username, password}
 		$.ajax({
@@ -338,6 +334,9 @@ function handleLoginSubmission(){
 			contentType: 'application/json',
 			success: function(data) {
 				authToken = data.authToken;
+				loggedIn = true;
+				localStorage.setItem("authToken", data.authToken);
+				localStorage.setItem("username", data.username);
 				updateNavigationBar(username, true);
 				getTrips();
 			},
@@ -348,16 +347,28 @@ function handleLoginSubmission(){
 	})
 }
 
+function checkUserLogin() {
+	if(localStorage.getItem('authToken')) {
+		let username = localStorage.getItem("username");
+		authToken = localStorage.getItem('authToken');
+		updateNavigationBar(username, true);
+		getTrips();
+		return;
+	}
+		showLandingPage();
+}
+
 function handleUserHomeClick() {
 	$('.nav-container').on('click','.home-link', function(event) {
-		console.log("Home clicked");
 		event.preventDefault();
 		getTrips();
 	})
 }
 function handleUserLogOutClick() {
 	$('.nav-container').on('click','.logout-link', function(event) {
-		console.log("Logoutclicked");
+		localStorage.removeItem("authToken");
+		localStorage.removeItem("username");
+		authToken = null;
 		updateNavigationBar(false);
 		showLandingPage();
 	})
@@ -649,7 +660,7 @@ function showLogIn() {
 }
 // Show list of trips
 function showTripsSection(tripData) {
-	$('body').css('background-image', 'url(https://images.pexels.com/photos/764293/pexels-photo-764293.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350)');
+	// $('body').css('background-image', 'url(https://images.pexels.com/photos/764293/pexels-photo-764293.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350)');
 	const content = `
 	<div class="outer">
 		<section class="trips-section">
@@ -667,8 +678,6 @@ function showTripsSection(tripData) {
 	
 	`
 	$('main').html(content);
-	console.log("***********************");
-	console.log(tripData);
 	$('.trips-container').html(tripsToHtml(tripData));
 }
 
@@ -770,6 +779,7 @@ function updateNavigationBar(username, isLoggedIn) {
 }
 
 function showLandingPage() {
+	console.log('showLandingPage');
 	$('body').css('background-image', 'url(https://images.pexels.com/photos/679072/pexels-photo-679072.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350)');
 	const content = `
 	<div class="intro-section">
@@ -785,7 +795,8 @@ function showLandingPage() {
 }
 
 function init() {
-	showLandingPage();
+	//showLandingPage();
+	checkUserLogin();
 	handleHomeSignUp();
 	handleHomeLogin();
 	handleLoginFormSigupLink();
@@ -811,5 +822,6 @@ function init() {
 	handleCancelAddPlace();
 	handleCancelEditPlace();
 	handleGetStarted();
+	
 }
 $(init());
