@@ -649,6 +649,7 @@ function showLogIn() {
 }
 // Show list of trips
 function showTripsSection(tripData) {
+	$('body').css('background-image', 'url(https://images.pexels.com/photos/764293/pexels-photo-764293.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350)');
 	const content = `
 	<div class="outer">
 		<section class="trips-section">
@@ -769,6 +770,7 @@ function updateNavigationBar(username, isLoggedIn) {
 }
 
 function showLandingPage() {
+	$('body').css('background-image', 'url(https://images.pexels.com/photos/679072/pexels-photo-679072.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350)');
 	const content = `
 	<div class="intro-section">
 			<p>
