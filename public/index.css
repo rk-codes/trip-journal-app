@@ -7,7 +7,8 @@ body{
 	font-size: 18px;
 	margin: 0 auto;
 	height: 100%;
-	background-image: url(https://static.guideadvisor.com/wp-content/uploads/thumb-cache/shutterstock_91028072-3e46b96aa4275596a5bb6c403b7cec12-840x554-85-nocrop.jpg);
+	/* background-image: url(https://static.guideadvisor.com/wp-content/uploads/thumb-cache/shutterstock_91028072-3e46b96aa4275596a5bb6c403b7cec12-840x554-85-nocrop.jpg); */
+	background-image: url('./images/travel_bg.jpeg');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
@@ -25,6 +26,7 @@ body{
 	margin-left: 5%;
 	font-size: 2em;
 	font-family: 'Special Elite', cursive;
+	color: #2e6912;
 }
 header ul li {
 	display: inline-block;
@@ -42,24 +44,29 @@ nav{
 	padding: 10px;
 	border-radius: 6px;
 	border: 0;
-	background-color: #50959c;
-	color: #fbe986;
+	/* background-color: #50959c; */
+	/* color: #fbe986; */
+	color: #2e6912;
 	cursor: pointer;
+	font-size: 1.2em;
 }
 .login-button:hover, .signup-button:hover{
-	color: #8af7c7;
+	color: black;
 }
 .intro-section {
-	border-radius: 24px;
-	background: radial-gradient(circle, #58410d, #42868e);
-	margin: 5%;
+	/* border-radius: 24px; */
+	/* background: radial-gradient(circle, #58410d, #42868e); */
+	background: white;
+	width: 100%;
+	/* margin: 5%; */
 	text-align: center;
 	position: absolute;
-	top: 30%;
+	top: 46%;
+	/* top: 30%; */
 	left: 0;
 	right: 0;
-	color: floralwhite;
-	opacity: 0.8;
+	/* color: floralwhite; */
+	opacity: 0.7;
 	padding-left: 8px;
 	padding-right: 8px;
 }
@@ -73,12 +80,13 @@ nav{
 .intro-section p {
 	font-size: 1.3em; 
 	font-family: 'Playfair Display', serif;
-	color: floralwhite;
+	/* color: floralwhite; */
 }
 .start-button {
 	align-self: center;
 	border-radius: 10px;
-	background-color: #f9be0f;
+	/* background-color: #f9be0f; */
+	background-color: #a09e21;
 	padding: 10px;
 	font-size: 1.2em;
 	margin-bottom: 8px;
@@ -111,7 +119,7 @@ form .required{
 .signup-section h3,
 .login-section h3{
     /*background: #4D4D4D;*/
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     font-family: 'Open Sans Condensed', sans-serif;
     color: #797979;
     font-size: 18px;
@@ -138,6 +146,15 @@ textarea {
     border-bottom: 1px solid #ddd;
     font: 16px Arial, Helvetica, sans-serif;
     height: 35px;
+}
+.back-to-login-btn {
+	background-color: black;
+	color: white;
+	border-radius: 10px;
+	cursor: pointer;
+}
+.password-wrong h3 {
+	color: red;
 }
 textarea {
 	padding: 8px;
@@ -170,15 +187,16 @@ textarea {
     padding: 20px;
     border-radius: 8px;
 }
-.create-trip-form, .edit-trip-form, .create-trip-form, .add-place-form{
+/* .create-trip-form, .edit-trip-form, .create-trip-form, .add-place-form{
 	background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg);
-}
+} */
 .home-link, .logout-link {
 	margin: 10px;
 	font-size: 1.5em;
-	color: #1b8e96;
+	/* color: #1b8e96; */
+	color: #52610a;
 	text-decoration: none;
-	border-bottom: 1px solid darkorange;
+	border-bottom: 1px solid #2cbabd;
   }
 a:hover {
 	color: darkorange;
@@ -188,7 +206,9 @@ a:hover {
 	color: darkorange;
 }
 .start-button:hover{
-	background-color: #9af2f3;
+	/* background-color: #9af2f3; */
+	background-color: black;
+	color: white;
 }
 .form-button:hover, .signup-form-button:hover,
 .login-form-button:hover{
@@ -218,7 +238,8 @@ label{
 	max-width: 600px;
 	margin: 0 auto;
 	opacity: 0.9;
-	background-color: #57b7b7;
+	/* background-color: #57b7b7; */
+	background-color: #515214;
 	margin-top: 15px;
 }
 
@@ -243,8 +264,7 @@ label{
 	justify-content: center;
 }
 .trip-item {
-	/* background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg); */
-	background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyWeOSz2U6hAeNnsgHlAj-2vEfczeBsCm_lO5fkHhTbR4Sh5XQ);
+	background-image: url('./images/tripitem_bg.jpeg');
 	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
 	margin-bottom: 20px;
 	border: 1px solid grey;
@@ -287,7 +307,7 @@ label{
 
 @media screen and (min-width : 600px) {
 	.before-trip, .after-trip {
-		border-bottom: 2px solid darkorange;
+		border-bottom: 2px solid #ffb700;
 		display: inline-block;
 		width: 23%;
 	}
