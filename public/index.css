@@ -8,7 +8,7 @@ body{
 	margin: 0 auto;
 	height: 100%;
 	/* background-image: url(https://static.guideadvisor.com/wp-content/uploads/thumb-cache/shutterstock_91028072-3e46b96aa4275596a5bb6c403b7cec12-840x554-85-nocrop.jpg); */
-	background-image: url('https://images.pexels.com/photos/679072/pexels-photo-679072.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=350');
+	background-image: url('./images/travel_bg.jpeg');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
@@ -178,9 +178,9 @@ textarea {
     padding: 20px;
     border-radius: 8px;
 }
-.create-trip-form, .edit-trip-form, .create-trip-form, .add-place-form{
+/* .create-trip-form, .edit-trip-form, .create-trip-form, .add-place-form{
 	background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg);
-}
+} */
 .home-link, .logout-link {
 	margin: 10px;
 	font-size: 1.5em;
@@ -255,8 +255,7 @@ label{
 	justify-content: center;
 }
 .trip-item {
-	/* background-image: url(http://inkinvites.net/wp-content/uploads/textured-paper.jpg); */
-	background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyWeOSz2U6hAeNnsgHlAj-2vEfczeBsCm_lO5fkHhTbR4Sh5XQ);
+	background-image: url('./images/tripitem_bg.jpeg');
 	box-shadow: -12px 14px 8px -6px rgba(0,0,0,0.37);
 	margin-bottom: 20px;
 	border: 1px solid grey;
