@@ -17,12 +17,8 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 // GET all trips
 router.get('/', jwtAuth, (req, res) => {
-
   if(req.user) {
-    console.log(req.user.id);
     User.findByUserName(req.user.username).populate({path: 'trips'}).then(function(user) {
-      console.log(user.username);
-      console.log(user.trips.length); 
       res.status(200).json(user.trips.map(trip => trip.serialize()));
     })
    
@@ -86,8 +82,6 @@ router.delete('/:id', jwtAuth, function(req, res)  {
 
 // POST new trip
 router.post('/', jsonParser, jwtAuth, (req, res) => {
-console.log("POST a trip");
-console.log(req.user);
   const requiredFields = ['name', 'description', 'startDate', 'endDate', 'country'];
   for (let i = 0; i < requiredFields.length; i++) {
       const field = requiredFields[i];
@@ -164,11 +158,6 @@ router.get('/:id/places', jwtAuth, (req, res) => {
 router.get('/:tripid/places/:placeid',jwtAuth, (req, res) => {
   Place.findById(req.params.placeid)
   .then(place => {
-    console.log(place.trip.constructor.name);
-
-    console.log(typeof(place.trip));
-    console.log(req.params.tripid);
-     console.log(typeof(req.params.tripid));
     if(place.trip.toString() === req.params.tripid) {
       res.status(200).json(place)
     } else{
@@ -188,7 +177,6 @@ router.post('/:id/places', jwtAuth, jsonParser, (req, res) => {
           return res.status(400).send(message);
       }
     }
-    console.log(req.params.id);
     const newPlace = {
       trip: mongoose.Types.ObjectId(req.params.id),
       name: req.body.name,
@@ -218,7 +206,6 @@ router.delete('/:tripid/places/:placeid', jwtAuth, jsonParser, (req, res) => {
   Place.findByIdAndRemove(req.params.placeid)
   .then(function(place) {
     if(place) {
-      console.log(place);
       Trip.findByIdAndUpdate({_id: req.params.tripid},
         { $pull: {places: req.params.placeid} }, function(err, data) {
           if(err) {
