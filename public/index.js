@@ -342,9 +342,24 @@ function handleLoginSubmission(){
 			},
 			error: function(err) {
 				console.error(err);
+				$('.login-section').html(handleIncorrectPassword())
 			}
 		})
 	})
+}
+
+function handleIncorrectPassword() {
+	return `
+    <div class="password-wrong">
+        <h3>Sorry, the username and or password you entered is incorrect.</h3>
+        <button class="back-to-login-btn" type="submit" role="button">OK</button>
+    </div>`
+}
+function backToLogIn() {
+    $('main').on('click', '.back-to-login-btn', function(event) {
+        $('.password-wrong').hide();
+        showLogIn();
+    });
 }
 
 function checkUserLogin() {
@@ -641,7 +656,7 @@ function showSignUp() {
 function showLogIn() {
 	const content = `
 	<section class="login-section">
-		<h3>Login</h3>
+		<h3>LOGIN</h3>
 		<form class="login-form">
 			<fieldset>
 				<label for="username">Username</label>
@@ -822,6 +837,7 @@ function init() {
 	handleCancelAddPlace();
 	handleCancelEditPlace();
 	handleGetStarted();
+	backToLogIn();
 	
 }
 $(init());

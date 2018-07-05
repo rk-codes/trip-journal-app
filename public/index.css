@@ -119,7 +119,7 @@ form .required{
 .signup-section h3,
 .login-section h3{
     /*background: #4D4D4D;*/
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     font-family: 'Open Sans Condensed', sans-serif;
     color: #797979;
     font-size: 18px;
@@ -146,6 +146,12 @@ textarea {
     border-bottom: 1px solid #ddd;
     font: 16px Arial, Helvetica, sans-serif;
     height: 35px;
+}
+.back-to-login-btn {
+	background-color: black;
+	color: white;
+	border-radius: 10px;
+	cursor: pointer;
 }
 textarea {
 	padding: 8px;
