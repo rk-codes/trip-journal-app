@@ -153,6 +153,9 @@ textarea {
 	border-radius: 10px;
 	cursor: pointer;
 }
+.password-wrong h3 {
+	color: red;
+}
 textarea {
 	padding: 8px;
 }
